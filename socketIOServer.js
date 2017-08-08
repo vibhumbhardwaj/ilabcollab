@@ -13,7 +13,8 @@ module.exports = function (server) {
         socket.on('findAvailability', function (chatRoom) {
             console.log('[INFO] finding availability of room --> ' + chatRoom);
             var index;
-            if (chatRoom.match(config.alphaNumericRegex).length == 1)
+            let match = chatRoom.match(config.searchQueryRegex)
+            if ( match && match.length == 1)
                 index = chatRooms.findIndex(function (ele) {
                     return ele.chatRoom == chatRoom;
                 });
@@ -21,6 +22,7 @@ module.exports = function (server) {
                 socket.emit('availabilityResult', true);
             else
                 socket.emit('availabilityResult', false);
+            console.log('[INFO] index found as: ' + index + ' <-- undefined means not allowed');
         })
 
         socket.on('new room', function (chatRoom) {
