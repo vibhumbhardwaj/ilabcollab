@@ -37,7 +37,7 @@ module.exports = function (server) {
                         socket.emit('room added');
                     }
                     else {
-                        socket.emit('unauthorised', 'Done already!! Have some chill.');
+                        socket.emit('unauthorised', 'Done already!! Have some chill. Go login to room or something');
                     }
                 }
                 else {
@@ -115,8 +115,8 @@ module.exports = function (server) {
             if (index == localRoomIndex && msg.userName == userName) {
                 var chatRoom = msg.chatRoom;
 
-                // log messages here.
                 console.log('................saving message supposedly........................\n' + msg.userName + '@ ' + chatRoom + ' - ' + msg.message + '\n');
+                socketHelper.createBackup(msg, chatRoom);
 
                 chatRooms[globalRoomIndex].messages.push(msg);
                 socket.broadcast.to(chatRoom).emit('newMessage', msg);

@@ -15,7 +15,7 @@ var initialiseChatRooms = function () {
         if(!err)
             chatRoomsDB.forEach(function (room) {
                 room = room._doc;
-                chatRooms.push({ chatRoom: room.chatRoom, messages: [], showPrevious: room.showPrevious, private: room.private });
+                chatRooms.push({ chatRoom: room.chatRoom, messages: room.messages, showPrevious: room.showPrevious, private: room.private });
             }, this);
     });
 
@@ -50,10 +50,18 @@ var verifyToken = function(encryptedToken, chatRoom){
     return;
 }
 
+var saveMessageToDB = (msg, chatRoom) => {
+    adapter.saveChatMessage(chatRoom, msg, (err, chatRoom) =>{
+        if(!err) console.log('[INFO] ALL good man. Database updated.');
+        else console.error('[ERROR] shit happened while updating db with new messages -->' + error.toString());
+    })
+}
+
 module.exports = {
     initialiseChatRooms: initialiseChatRooms,
     getChatRoom: getChatRoom,
     getRoomIndex: getRoomIndex,
     isAllowed: isAllowed,
-    getChatRoomList: getChatRoomList
+    getChatRoomList: getChatRoomList,
+    createBackup: saveMessageToDB
 }

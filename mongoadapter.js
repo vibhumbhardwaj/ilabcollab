@@ -47,6 +47,16 @@ var findChatRoom = function (findthis, bc) {
     })
 }
 
+var saveChatMessage = (chatRoom, msg, bc) => {
+    model.ChatRoom.findOneAndUpdate({'chatRoom': chatRoom}, {$push: {messages: msg}}, (err, updatedChatRoom) =>{
+        if(err) 
+            console.error('[ERROR] Couldn\'t save message to the database. was saving this --> ' + msg.message + ' @' + chatRoom);
+        else
+            console.log('message saved successfully.');
+        bc(err, updatedChatRoom);
+    });
+}
+
 var saveUserOnly = function (book, user, bc) {
     model.User.findByIdAndUpdate(user._id, user, function (err, updatedUser) {
         if (err) {
@@ -93,5 +103,6 @@ module.exports = {
     getAllUsers: getAllUsers,
     findChatRoom: findChatRoom,
     getChatRooms: getChatRooms,
-    createChatRoom: createChatRoom
+    createChatRoom: createChatRoom,
+    saveChatMessage: saveChatMessage
 }
