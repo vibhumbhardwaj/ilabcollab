@@ -33,7 +33,14 @@
         <input type="checkbox" class="w3-check" ng-model="private"> My Collab Room is SSO enabled. [Requires user registration]
         <br><br>
         <span class="w3-tiny">Room's Name</span>
-        <input type="text" ng-model="chatRoom" class="w3-input" placeholder="Enter your Collab 's name here."><br>
+        <!-- <input type="text" ng-model="chatRoom" class="w3-input" placeholder="Enter your Collab 's name here."><br> -->
+        <select ng-model="" class="w3-select" ng-options="chatRoom.chatRoom as chatRoom.chatRoom for chatRoom in chatRooms">
+            <option value="" selected>Choose your Collab's name here</option>
+            <!-- <option ng-repeat="chatRoom in chatRooms | filter: {private: false}" ng-value="chatRoom.chatRoom">
+                {{chatRoom.chatRoom}}
+            </option> -->
+        </select>
+        <br><br>
         <span class="w3-tiny">Room Password</span>
         <input type="password" ng-model="password"   class="w3-input" ng-class="{'w3-disabled': (private && !passwordRequired)}"
             ng-disabled="(private && !passwordRequired)" placeholder="Then the password assigned to the collab room.">
