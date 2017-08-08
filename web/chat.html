@@ -1,0 +1,91 @@
+<html>
+
+<head>
+    <style>
+        #memediv {
+            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)
+        }
+    </style>
+
+    <link rel="stylesheet" href="/style/app.css">
+    <script src="/scripts/angular.js"></script>
+    <script src="/scripts/booksApp.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/scripts/chatController.js"></script>
+    
+</head>
+
+<body ng-app="booksApp" ng-controller="chatController">
+
+    <div class="w3-top vb-parent" style="z-index: 5; background: darkseagreen; display: block;  overflow: hidden; width: 100%; height: 38px">
+        <div class="w3-left">
+            <span class="w3-button" ng-click="visitChat()"><b>Join another Room</b></span>
+            <span class="w3-button" ng-click="visitCreateRoom()">Create a new One instead</span>
+        </div>
+
+        <div class="w3-right">
+            <span class="w3-button">Other</span>
+            <span class="w3-button">Random</span>
+            <span class="w3-button">Buttons</span>
+            <span class="w3-button" ng-click="toggleSideBar();"><b>Toggle Sidebar</b></span>
+        </div>
+
+
+    </div>
+
+    <div id="chatSideBar" class="w3-animate-right" style="z-index: 1;position: fixed; display: block; height: calc(100% - 40px);right: 0 ">
+        <b>Active Rooms </b><br>
+        <ul class="w3-ul w3-hoverable w3-btn vb-btn" style="width: 100%">
+            <li ng-repeat="room in allowedRooms">
+                {{room.chatRoom}} <b>{{room.count}}</b>
+            </li>
+        </ul>
+
+    </div>
+
+
+
+    <div class="w3-main w3-content w3-padding vb-main" ng-show="authorised" style="position: relative; height: calc(100% - 40px)">
+
+        <form ng-submit="send()">
+            <div class="w3-right">
+                Receive notifications for incoming messages <input type="checkbox" class="w3-check" ng-model="notificationEnabled">
+            </div>
+            <h3>{{userName}}</h3>
+            <input type="text" autocomplete="off" class="w3-input" ng-model="currentMessage" placeholder="Type in your message here."></textarea>
+
+            <!-- <span class="w3-btn w3-right vb-btn" ng-click="send()"><b>Send</b></span><br> -->
+        </form>
+        <br>
+        <div class="w3-btn" ng-click="toggleMemeSearch()" id="memeButton" style="z-index: 1; position: absolute; right: 2; background: #475E47; color: white">More than a :)</div>
+        <div id="memeDiv" class="w3-animate-right w3-btn" style=" z-index: 2; position: absolute; width: 250px; right: 2; overflow: auto; height: calc(100vh - 200px); display: none; background: white">
+            <div style="z-index:3; background: white; width: 100%">
+                <span class="w3-btn w3-right" ng-click="toggleMemeSearch()"><b>X</b></span>
+                <form ng-submit="memeSearch()">
+                    <input type="text" ng-model="memeInput" class="w3-input" placeholder="Search Meme">
+                </form>
+            </div>
+            <div id="memes">
+                <ul class="w3-ul w3-hoverable w3-btn" style="z-index: 2;">
+                    <li ng-repeat="image in imageResult">
+                        <img ng-src="{{image}}" ng-click="sendImage(image)" height="150px">
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div ng-repeat="msg in messages | orderBy:'+':true track by $index">
+
+            <b>{{msg.userName}}</b>: <span ng-if="!msg.image">{{msg.message}}</span><span ng-if="msg.image"><img ng-src="{{msg.message}}" height="100px"></span>
+        </div>
+
+
+
+    </div>
+
+    <div class="w3-main w3-content w3-padding vb-main" ng-hide="authorised" id="errorMessage">
+        {{errorMessage}}
+    </div>
+
+</body>
+
+</html>

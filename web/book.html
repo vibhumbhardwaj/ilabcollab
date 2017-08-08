@@ -1,0 +1,106 @@
+<html>
+
+<head>
+    <title>Books</title>
+    <style>
+        #bookscontainer li {
+            float: left;
+            width: 250px;
+            margin: 20px;
+        }
+
+        .yoman {
+            font-family: fantasy
+        }
+    </style>
+    <link rel="import" href="/headerInclude.html">
+    <script src="/scripts/bookdetailController.js"></script>
+
+</head>
+
+<body ng-app="booksApp" ng-controller="bookdetailController">
+    <div class="w3-top vb-parent" style="background: darkseagreen; display: block;  overflow: hidden; width: 100%; height: 38px">
+        <!-- <div class="w3-left">
+            <span class="w3-button" ng-click="toggleSearchBar()">Find Books</span>
+            
+        </div>
+        <div class="w3-animate-left" id="searchBox" style="display: none">
+            <input type="text" class="w3-input" style="display: inline-block; width: 50%" ng-model="search" ng-change="hitIt()" placeholder="Just Type and Go"
+            />
+        </div> -->
+
+        <div class="w3-right">
+            <span class="w3-button">Button</span>
+            <span class="w3-button">I do nothing</span>
+            <span class="w3-button" ng-click="visitChat();"><b>CHAT</b></span>
+        </div>
+
+
+    </div>
+    <div id="bookcontainer" ng-if="!error" class="w3-main w3-content w3-padding vb-main">
+        <h2>{{book.book}}</h2>
+        <h4>{{book.author}}</h4>
+        <!-- <div class="w3-padding-16"></div> -->
+        <div class="w3-left">
+            <img ng-src="/images/{{book._id}}.jpg" width="400px" height="400px" onerror="this.src='/images/searchIcon.png'">
+        </div>
+        <div class="w3-left vb-leftMargin">
+            <h1>{{book.points}}</h1> Points<br>
+            <div ng-if="book.issued">Issued To: {{book.issuedTo}}<br>
+                <div ng-if="book.issuedToCurrentUser">
+                    Hey you! Yes you nigga, Mr. Librarian was looking for you. When are you gonna return the book huh?
+                    <input type="button" value="Return back" ng-click="returnBack()" />
+                </div>
+                <div ng-if="!book.issuedToCurrentUser && isAdmin()">
+                    <input type="button" value="Get back" ng-click="returnBack()" />
+                </div>
+            </div>
+            <div ng-if="!book.issued">
+                <input type="button" value="Issue" ng-click="issue()" /><br> ADMIN: {{isAdmin()}}&nbsp; prospectList: {{prospectList[0]}}&nbsp;
+                <div ng-if="isAdmin() && prospectList[0]">
+                    Click the user you want to issue this book for...
+                    <ul ng-repeat="user in prospectList">
+                        <li ng-click="issueForThis(user.userId)">{{user.userName}}</li>
+                    </ul>
+                </div>
+            </div>
+            <div ng-if="book.upvoted_by_users[0]">
+                These People like this: <br>
+                <ul ng-repeat="user in book.upvoted_by_users">
+                    <li>{{user.userName}}</li>
+                </ul>
+            </div>
+        </div>
+
+
+        <!--         
+        Name: {{book.book}}<br> Is this available? {{!book.issued}}<br> Total Points: {{book.points}} &nbsp; <span ng-class="{'yoman': book.upvoteStatus == 1}"
+            ng-click="toggleUpvote()">UPVOTE</span><br>
+        <div ng-if="book.issued">Issued To: {{book.issuedTo}}<br>
+            <div ng-if="book.issuedToCurrentUser">
+                Hey you! Yes you nigga, Mr. Librarian was looking for you. When are you gonna return the book huh?
+                <input type="button" value="Return back" ng-click="returnBack()" />
+            </div>
+            <div ng-if="!book.issuedToCurrentUser && isAdmin()">
+                <input type="button" value="Get back" ng-click="returnBack()" />
+            </div>
+        </div>
+        <div ng-if="!book.issued">
+            <input type="button" value="Issue" ng-click="issue()" /><br> ADMIN: {{isAdmin()}}&nbsp; prospectList: {{prospectList[0]}}&nbsp;
+            <div ng-if="isAdmin() && prospectList[0]">
+                Click the user you want to issue this book for...
+                <ul ng-repeat="user in prospectList">
+                    <li ng-click="issueForThis(user.userId)">{{user.userName}}</li>
+                </ul>
+            </div>
+        </div>
+        <div ng-if="book.upvoted_by_users[0]">
+            These People like this: <br>
+            <ul ng-repeat="user in book.upvoted_by_users">
+                <li>{{user.userName}}</li>
+            </ul>
+        </div> -->
+
+    </div>
+
+</body>

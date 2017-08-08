@@ -1,0 +1,79 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="/style/app.css">
+    <script src="/scripts/angular.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/scripts/booksApp.js"></script>
+    <script src="/scripts/newRoomController.js"></script>
+</head>
+
+<body ng-app="booksApp" ng-controller="newRoomController">
+    <div class="w3-top vb-parent" style="background: darkseagreen; display: block;  overflow: hidden; width: 100%; height: 38px">
+        <div class="w3-left">
+            <span class="w3-button" ng-click="visitChat()">Login to an existing Collab Room</span>
+        </div>
+
+        <div class="w3-right">
+            <span class="w3-button">Other</span>
+            <span class="w3-button">Random</span>
+            <span class="w3-button">Buttons</span>
+            <span class="w3-button" ng-click="visitChat();"><b>COLLAB</b></span>
+        </div>
+
+
+    </div>
+
+    <div class="w3-main w3-content w3-padding vb-main">
+
+        <form ng-submit="validateAndContinue(form1)" name="form1">
+            <div>
+                <h1>Create new Collab-Room</h1>
+            </div>
+            <div ng-show="invalid" style="color: red">
+                <h5>{{errorMessage}}</h5>
+            </div>
+            <div>
+                <div id="chatRoomDiv">
+                    <span class="w3-tiny">Collaboration Room's Name</span>
+                    <input type="text" autocomplete="off" class="w3-input" name="chatRoom" ng-model="chatRoom" placeholder="Collab Room's Name"
+                        ng-blur="findAvailability()">
+                    <span class="vb-transparent"><input type="checkbox" class="w3-check w3-disabled" ng-model="private"> Only the users I select below can connect to this room</span> <span class="w3-tiny">Functionality Coming soon</span>
+                    <div id="usersDiv" ng-show="private && users[0]">
+                        Users' list shows here
+                    </div>
+                    <span ng-show="private"><br><input type="checkbox" class="w3-check" ng-model="passwordRequired"> Even if the room's SSO enabled, my Collaboration room would still require a password to login</span>
+                    <div ng-if="called">
+                        <span ng-if="available"> <b>Room name's available. Carry on.</b></span>
+                        <span ng-if="!available" ><b> M sorry. I really am. Name's already taken.</b></span>
+                    </div>
+                    <br><br>
+                </div>
+
+                <div id="passwordDiv" ng-show="!private || passwordRequired">
+                    <span class="w3-tiny">And what would be its password?</span>
+                    <input type="password" autocomplete="off" class="w3-input" name="password" ng-model="password" placeholder="Password">
+                    <br><br>
+
+                    <span class="w3-tiny">Can you repeat that again? It's a basic etiquette</span>
+                    <input type="password" autocomplete="off" class="w3-input" name="password" ng-model="confirmPassword" placeholder="Confirm" ng-blur="isConfirmed()">
+                    <br><br>
+                </div>
+
+                <div id="optionsDiv">
+                    <span class="w3-tiny">Other Options</span><br>
+                    <input type="checkbox" class="w3-check" ng-model="showPrevious"> New connections to the room should be able to see previous messages.<br>
+                    <span ng-show="!showPrevious" class="w3-small"><br><b>N.B.</b> <i>Window Refreshes are also treated as new connection. I thought you should know.</i><br></span>                  
+                    <br><br>
+                </div>
+            <div id="submitDiv">
+                <input type="submit" class="w3-btn vb-btn" value="Submit Request" />
+            </div>
+            </div>
+        </form>
+
+    </div>
+
+</body>
+
+</html>

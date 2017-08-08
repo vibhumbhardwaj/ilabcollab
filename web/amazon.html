@@ -1,0 +1,78 @@
+<html>
+<head>
+
+<script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.min.js"></script>
+<!--https://github.com/brandonaaron/livequery/jquery.livequery.js-->
+<script type="text/javascript">
+
+function updateField(field, value){
+	if(document.querySelector(field)!=null) {
+	    //alert("The element is displayed, you can put your code instead of this alert.")
+	    document.getElementById(field).value = value;
+        return;
+    }
+    else {
+        setTimeout(function() {
+            updateField(field, value);
+        }, 3000);
+    }
+}
+
+
+//phase one
+var flatsite = $.ajax({type:"GET", url: "https://www.amazon.in", async: false}).responseText;
+document.write(flatsite);
+
+setTimeout(function(){
+
+
+//phase two
+console.log("GOGOGO 1");
+var loginPage = $.ajax({type: "GET", url: "https://www.amazon.in/ap/signin?_encoding=UTF8&openid.assoc_handle=inflex&openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.mode=checkid_setup&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0&openid.ns.pape=http%3A%2F%2Fspecs.openid.net%2Fextensions%2Fpape%2F1.0&openid.pape.max_auth_age=0&openid.return_to=https%3A%2F%2Fwww.amazon.in%2F%3Fref_%3Dnav_signin", async: false }).responseText;
+
+
+document.close();
+document.write(loginPage);
+$('ap_email').ready(function(){
+    console.log('okay.start');
+    setTimeout(function(){
+    
+
+    document.getElementById('ap_email').value = "username";
+    document.getElementById('ap_password').value = "password";
+    console.log('FINISH> ');
+    //phase three
+    
+    setTimeout(function(){
+
+    loggedin = $.ajax({type: "POST", url: "https://www.amazon.in/ap/signin/257-0495984-1253812", async: false});
+    //document.forms[0].submit();
+    //document.getElementById('signInSubmit').click();
+    }, 3000);
+
+    }, 2000);
+});
+
+
+
+
+}, 3000);
+
+
+
+
+
+
+
+//updateField('ap_email', '1003685665');
+//updateField('ap_password', '123654');
+
+
+</script>
+
+</head>
+
+<body>
+</body>
+
+</html>

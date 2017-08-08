@@ -1,0 +1,57 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="/style/app.css">
+    <script src="/scripts/angular.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/scripts/booksApp.js"></script>
+    <script src="/scripts/chatLoginController.js"></script>
+</head>
+
+<body ng-app="booksApp" ng-controller="chatLoginController">
+    <div class="w3-top vb-parent" style="background: darkseagreen; display: block;  overflow: hidden; width: 100%; height: 38px">
+        <div class="w3-left">
+            <span class="w3-button" ng-click="visitCreateRoom()"><b>Create a new Collab Space</b></span>
+        </div>
+
+        <div class="w3-right">
+            <span class="w3-button">Other</span>
+            <span class="w3-button">Random</span>
+            <span class="w3-button">Buttons</span>
+            <span class="w3-button" ng-click="visitChat();"><b>Login to Collab Room</b></span>
+        </div>
+
+
+    </div>
+
+    <div class="w3-main w3-content w3-padding vb-main" >
+        
+        <form ng-submit="getChatToken()">
+        <div><h1>Login to Collab Room</h1></div><div ng-show="invalid" style="color: red"><h5>{{errorMessage}}</h5></div>
+        <span class="w3-tiny">Username</span>
+        <input type="text" class="w3-input" ng-model="userName" ng-disabled="private" ng-class="{'w3-disabled': private}" placeholder="Your Username for session">
+        <input type="checkbox" class="w3-check" ng-model="private"> My Collab Room is SSO enabled. [Requires user registration]
+        <br><br>
+        <span class="w3-tiny">Room's Name</span>
+        <input type="text" ng-model="chatRoom" class="w3-input" placeholder="Enter your Collab 's name here."><br>
+        <span class="w3-tiny">Room Password</span>
+        <input type="password" ng-model="password"   class="w3-input" ng-class="{'w3-disabled': (private && !passwordRequired)}"
+            ng-disabled="(private && !passwordRequired)" placeholder="Then the password assigned to the collab room.">
+        <div ng-show="private"> <input type="checkbox" class="w3-check" ng-model="passwordRequired"> But it still requires another password
+        </div>
+        <br>
+<input type="submit" class="w3-button vb-btn" value="Request Access"></input>
+
+
+        <br><span ng-if="chill"> User is already logged in. no need to panic.</span>
+        <br>
+        <br>
+        <i> Don't know of any to begin with? Jump straight to </i> <span class="w3-button vb-btn" ng-click="gotoPublic()">public room</span>
+
+        </form>
+    
+    </div>
+    
+</body>
+
+</html>

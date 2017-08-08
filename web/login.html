@@ -1,0 +1,50 @@
+<html>
+
+<head>
+    <title>Books</title>
+    <style>
+
+    </style>
+
+    <link rel="import" href="/headerInclude.html">
+    <script src="/scripts/loginController.js"></script>
+</head>
+
+<body ng-app="booksApp" ng-controller="loginController">
+    <br><span ng-if="error">What happened? Shit Happened. Bloody shit.</span>
+        <div class="w3-top vb-parent" style="background: darkseagreen; display: block;  overflow: hidden; width: 100%; height: 38px">
+            <div class="w3-left">
+                <span class="w3-button" ng-click="visitBooks()">BOOK-BOOK-BAKOOB</span>
+            </div>
+        <!-- <div class="w3-left">
+            <span class="w3-button" ng-click="toggleSearchBar()">Find Books</span>
+            
+        </div>
+        <div class="w3-animate-left" id="searchBox" style="display: none">
+            <input type="text" class="w3-input" style="display: inline-block; width: 50%" ng-model="search" ng-change="hitIt()" placeholder="Just Type and Go"
+            />
+        </div> -->
+
+        <div class="w3-right">
+            <span class="w3-button">Other</span>
+            <span class="w3-button">Random</span>
+            <span class="w3-button">Buttons</span>
+            <span class="w3-button" ng-click="visitChat();"><b>CHAT</b></span>
+        </div>
+
+
+    </div>
+
+    <div class="w3-main w3-content w3-padding vb-main">
+        <h1>Login Screen</h1>
+        <input type="text" ng-model="username" class="w3-input" placeholder="Enter your Username here."><br>
+        <input type="password" ng-model="password" ng-blur="loginUser()" class="w3-input" placeholder="Then your password. You get logged in automatically. There's no button">
+        <span class="w3-button vb-btn" ng-click="logoutUser()">Sign me out please.</span>
+    <br><span ng-if="chill"> User is already logged in. no need to panic.</span>
+    <br>
+    <br>
+        <!-- <i> Don't have one to begin with? Oh well get out of here then. </i> -->
+        <span class="w3-button vb-btn" ng-click="visitChat();">Take me to Chat Module</span>
+    </div>
+
+</body>

@@ -1,0 +1,72 @@
+
+<html>
+
+
+
+
+
+<script>
+
+function hellothere(){
+
+document.writeln("<br><br>//////////////////////////////////////////////<br>");
+
+var one = [], two = [];
+
+var ques = prompt("Yea What? how many peeps in the circle?");
+
+for(i=0; i<ques; i++)
+
+	one.push(i+1);
+
+document.writeln(one);
+
+while(one.length != 1)
+
+{
+
+	for(i=0; i<one.length; i++)
+
+		if(i%2 == 0)
+
+			two.push(one[i]);
+
+	document.writeln("<br>"+two);	
+
+	if(two[two.length-1] == one[one.length-1])
+
+		two.shift();
+
+	one=two;
+
+	two = [];
+
+}
+
+// did it.. oh really ?
+
+document.writeln("<br>");
+
+document.writeln("<br>");
+
+document.writeln("Yes madafaakaaa:: + " + one[0] );
+
+document.writeln("//////////////////////////////////////////////<br>");
+
+}
+
+
+
+
+
+
+
+
+
+</script>
+
+<body onload="hellothere()">
+
+</body>
+
+</html>

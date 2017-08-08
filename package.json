@@ -1,0 +1,28 @@
+{
+  "name": "meanfirst",
+  "version": "1.0.0",
+  "description": "sample",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "vb",
+  "license": "ISC",
+  "dependencies": {
+    "express": "~4.15.3",
+    "ejs": "~2.5.6",
+    "express-generator": "~4.15.0",
+    "body-parser": "~1.17.2",
+    "cookie-parser": "~1.4.3",
+    "express-session": "~1.15.3",
+    "mongoose": "latest",
+    "jsonwebtoken": "7.4.1",
+    "morgan": "1.8.1",
+    "angular": "latest",
+    "socket.io": "latest",
+    "atob": "latest",
+    "socketio-jwt-auth": "latest",
+    "request": "2.81.0",
+    "crypto-js": "3.1.9-1"
+  }
+}
