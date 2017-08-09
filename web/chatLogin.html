@@ -27,15 +27,19 @@
     <div class="w3-main w3-content w3-padding vb-main" >
         
         <form ng-submit="getChatToken()">
-        <div><h1>Login to Collab Room</h1></div><div ng-show="invalid" style="color: red"><h5>{{errorMessage}}</h5></div>
+        <div><h1>Sign in to your Project Collaboration Space</h1></div><div ng-show="invalid" style="color: red"><h5>{{errorMessage}}</h5></div>
+        <hr>
+        <div id="learning_curve">
+            *<i>For creating a new Collab Space for your Project</i> --><span ng-click="visitCreateRoom()" class="w3-btn">click here</span>
+        </div>
         <span class="w3-tiny">Username</span>
         <input type="text" class="w3-input" ng-model="userName" ng-disabled="private" ng-class="{'w3-disabled': private}" placeholder="Your Username for session">
         <input type="checkbox" class="w3-check" ng-model="private"> My Collab Room is SSO enabled. [Requires user registration]
         <br><br>
         <span class="w3-tiny">Room's Name</span>
         <!-- <input type="text" ng-model="chatRoom" class="w3-input" placeholder="Enter your Collab 's name here."><br> -->
-        <select ng-model="" class="w3-select" ng-options="chatRoom.chatRoom as chatRoom.chatRoom for chatRoom in chatRooms">
-            <option value="" selected>Choose your Collab's name here</option>
+        <select ng-model="chatRoom" class="w3-select" ng-options="chatRoom.chatRoom as chatRoom.chatRoom for chatRoom in chatRooms">
+            <option value="" disabled hidden selected>Select your Project's name here</option>
             <!-- <option ng-repeat="chatRoom in chatRooms | filter: {private: false}" ng-value="chatRoom.chatRoom">
                 {{chatRoom.chatRoom}}
             </option> -->
@@ -53,7 +57,7 @@
         <br><span ng-if="chill"> User is already logged in. no need to panic.</span>
         <br>
         <br>
-        <i> Don't know of any to begin with? Jump straight to </i> <span class="w3-button vb-btn" ng-click="gotoPublic()">public room</span>
+        <i> Don't know of any to begin with? Just want to try out the platform.. Jump straight to </i> <span class="w3-button vb-btn" ng-click="gotoPublic()">public room</span>
 
         </form>
     
