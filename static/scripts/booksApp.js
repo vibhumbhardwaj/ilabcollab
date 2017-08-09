@@ -1,6 +1,10 @@
 var app = angular.module('booksApp', []);
 
 app.run(function ($rootScope, $http) {
+    if(!Array.prototype.findIndex){
+        window.document.body.innerHTML = '<h1>Sorry not sorry.</h1><br>Looks like your browser doesn\'t support 2015\'s ES6.0 standards. Looking at today\'s date, I can only advise you to upgrade your browser.<br>' 
+    }
+
     $rootScope.http = $http;
     $rootScope.http.defaults.headers.post['Authorization'] = window.localStorage.token;
     //$rootScope.token = "";

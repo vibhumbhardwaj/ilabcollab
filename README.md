@@ -1,4 +1,4 @@
-# ilabcollab -- Version 6
+# ilabcollab -- Version 6.2
 Current working url: http://tiny.cc/ilabcollab
 
 
@@ -8,6 +8,10 @@ Current working url: http://tiny.cc/ilabcollab
 3. One Page for all the rooms (No reloads for room change)
 4. Timestamp for messages.
 5. Different DB for development.
+
+**version 6.2** -->
+1. Stop supporting older browsers. It's high time.
+2. Changelog in web. //not working though.
 
 **version 6** -->
 1. Messages' persistence now resistant to server restarts !! WOW.
