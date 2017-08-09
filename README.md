@@ -11,6 +11,7 @@ Upcoming:
 
 version 6 -->
 1. Messages' persistence now resistant to server restarts !! WOW.
+2. Dropdown available for room login screen
 
 version 5 -->
 1. Spaces in chat room's names are now allowed
