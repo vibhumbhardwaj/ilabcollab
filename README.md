@@ -1,4 +1,4 @@
-# ilabcollab -- Version 6.2
+# ilabcollab -- Version 6.3
 Current working url: http://tiny.cc/ilabcollab
 
 
@@ -11,7 +11,7 @@ Current working url: http://tiny.cc/ilabcollab
 
 **version 6.2** -->
 1. Stop supporting older browsers. It's high time.
-2. Changelog in web. //not working though.
+2. Changelog in web. <-- done in 6.3
 
 **version 6** -->
 1. Messages' persistence now resistant to server restarts !! WOW.
