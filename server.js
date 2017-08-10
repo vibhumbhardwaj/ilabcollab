@@ -5,11 +5,9 @@ var morgan = require('morgan');
 var session = require('express-session')({secret:"oye"});
 var cookieParser = require('cookie-parser');
 var server = require('http').Server(app);
-var markupRead = require('express-markdown');
+var marked = require('marked');
 
 var io = require('./socketIOServer.js')(server);
-
-app.use(markupRead({directory: __dirname}));
 
 app.set('views', [__dirname + '/web', __dirname]);
 app.set('view engine', 'ejs');
@@ -35,7 +33,11 @@ app.get('/', function(req, res){
     res.render('chatLogin.html');
 })
 app.get('/changelog', (req, res) =>{
-    res.redirect('/README.md');
+    //res.redirect('./README.md');
+    require('fs').readFile('./README.md','utf8', (err, data)=>{
+        if(!err) res.send(marked(data));
+        else res.send('Error Reading the changelog file.');
+    })
 })
 
 app.use('/site',viewRouter);
