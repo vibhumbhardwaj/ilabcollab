@@ -24,8 +24,8 @@ app.controller('chatController', function ($rootScope, $scope, $window) {
             primaryIndex = index;
         socketArray.push({ index: index, chatRoom: room.chatRoom, socket: io('/chat',{ query: "auth_token=" + window.localStorage.chatToken + "&chatRoom=" + room.chatRoom, forceNew: true }) });
     });
-    if(!primaryIndex){
-        handleOops("Get Out. You're not authorised dude");
+    if(primaryIndex == undefined){
+        return;
     }
 
     socketArray.forEach(function (socketObject) {
