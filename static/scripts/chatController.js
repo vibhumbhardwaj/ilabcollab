@@ -37,7 +37,23 @@ app.controller('chatController', function ($rootScope, $scope, $window) {
                 document.getElementById('chatSideBar').style.display = 'none';
                 document.getElementById('chatSideBar').style.display = 'block';
             }
+            else {
+                $scope.messages.push(msg);
+                $scope.$apply();
+
+                if (!document.hasFocus())
+                    if ($scope.alertCount)
+                        $scope.alertCount++;
+                    else
+                        $scope.alertCount = 1;
+
+                if ($scope.notificationEnabled)
+                    window.alert('new Message!');
+            }            
         });
+        socketObject.socket.on('unauthorised', function (err) {
+            handleOops(err);
+        });        
     });
 
     $scope.toggleSideBar = function () {
@@ -78,24 +94,6 @@ app.controller('chatController', function ($rootScope, $scope, $window) {
         }
     }
 
-
-    socketArray[primaryIndex].socket.on('newMessage', function (msg) {
-        $scope.messages.push(msg);
-        $scope.$apply();
-
-        if (!document.hasFocus())
-            if ($scope.alertCount)
-                $scope.alertCount++;
-            else
-                $scope.alertCount = 1;
-
-        if ($scope.notificationEnabled)
-            window.alert('new Message!');
-    });
-
-    socketArray[primaryIndex].socket.on('unauthorised', function (err) {
-        handleOops(err);
-    });
 
     socketArray[primaryIndex].socket.on('previousMessages', function (msg) {
         //msg.chatRoom
