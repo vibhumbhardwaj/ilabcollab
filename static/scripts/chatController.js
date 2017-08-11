@@ -7,7 +7,12 @@ app.controller('chatController', function ($rootScope, $scope, $window) {
     $scope.imageResult = [];
     $scope.memeShow = false;
 
-
+    var handleOops = (err)=>{
+        $scope.authorised = false;
+        document.getElementById('errorMessage').innerHTML = err;
+        $scope.$apply();       
+        throw new Error('oops');
+    }
     //var socketPrimary = io({ 'chatRoom': chatRoom, query: "auth_token=" + window.localStorage.chatToken + "&chatRoom=" + chatRoom, forceNew: true });
     //socketPrimary.emit('newlyAdded', chatRoom);
     /**initialisation complete.**/
@@ -19,6 +24,9 @@ app.controller('chatController', function ($rootScope, $scope, $window) {
             primaryIndex = index;
         socketArray.push({ index: index, chatRoom: room.chatRoom, socket: io('/chat',{ query: "auth_token=" + window.localStorage.chatToken + "&chatRoom=" + room.chatRoom, forceNew: true }) });
     });
+    if(!primaryIndex){
+        handleOops("Get Out. You're not authorised dude");
+    }
 
     socketArray.forEach(function (socketObject) {
         socketObject.socket.on('newMessage', function (msg) {
@@ -86,9 +94,7 @@ app.controller('chatController', function ($rootScope, $scope, $window) {
     });
 
     socketArray[primaryIndex].socket.on('unauthorised', function (err) {
-        $scope.authorised = false;
-        document.getElementById('errorMessage').innerHTML = err;
-        $scope.$apply();
+        handleOops(err);
     });
 
     socketArray[primaryIndex].socket.on('previousMessages', function (msg) {

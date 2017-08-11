@@ -5,12 +5,11 @@ var morgan = require('morgan');
 var session = require('express-session')({secret:"oye"});
 var cookieParser = require('cookie-parser');
 var server = require('http').Server(app);
-
+var marked = require('marked');
 
 var io = require('./socketIOServer.js')(server);
 
-
-app.set('views', __dirname + '/web');
+app.set('views', [__dirname + '/web', __dirname]);
 app.set('view engine', 'ejs');
 app.engine('html',require('ejs').renderFile);
 
@@ -33,6 +32,14 @@ var apiRouterSecured = require('./apiRouterSecured.js');
 app.get('/', function(req, res){
     res.render('chatLogin.html');
 })
+app.get('/changelog', (req, res) =>{
+    //res.redirect('./README.md');
+    require('fs').readFile('./README.md','utf8', (err, data)=>{
+        if(!err) res.send(marked(data));
+        else res.send('Error Reading the changelog file.');
+    })
+})
+
 app.use('/site',viewRouter);
 app.use('/site/gateway', apiRouter);
 app.use('/site/gateway/secure', apiRouterSecured);

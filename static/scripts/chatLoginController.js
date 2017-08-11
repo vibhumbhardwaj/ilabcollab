@@ -11,7 +11,17 @@ app.controller('chatLoginController', function ($rootScope, $scope) {
     $scope.updateList();
 
     socket.on('roomsList', function(rooms){
-        chatRooms = rooms;
+        $scope.chatRooms = rooms;
+        $scope.chatRooms.sort(function(a,b){
+            if( a.chatRoom > b.chatRoom)
+                return +1;
+            else if( a.chatRoom < b.chatRoom)
+                return -1;
+            else
+                return 0;
+        })
+        console.log($scope.chatRooms);
+        $scope.$apply();
     })
 
     $scope.gotoPublic = function(){
