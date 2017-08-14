@@ -12,7 +12,7 @@ app.controller('bookdetailController', function($rootScope, $scope){
     $scope.hitIt = function(){
         $rootScope.http({
             method: 'GET',
-            url: '/site/gateway/books/' + bookId,
+            url: '/ilabcollab/gateway/books/' + bookId,
             datatype: 'json'
         }).then(function success(res){
             if(res.data.success)
@@ -28,7 +28,7 @@ app.controller('bookdetailController', function($rootScope, $scope){
     $scope.issue = function(){
         if($rootScope.isAdmin()){
             $rootScope.http({
-                url: '/site/gateway/secure/getProspectList',
+                url: '/ilabcollab/gateway/secure/getProspectList',
                 method: 'GET'
             }).then(function success(res){
                 if(res.data.success)
@@ -46,7 +46,7 @@ app.controller('bookdetailController', function($rootScope, $scope){
             prospect = $rootScope.getUserId();
         }
         $rootScope.http({
-            url: '/site/gateway/secure/issueTheBook',
+            url: '/ilabcollab/gateway/secure/issueTheBook',
             data: {bookId: $scope.book._id, userId: prospect},
             method: 'POST'
         }).then(function success(res){
@@ -60,7 +60,7 @@ app.controller('bookdetailController', function($rootScope, $scope){
 
     $scope.returnBack = function() {
         $rootScope.http({
-            url: '/site/gateway/secure/returnTheBook',
+            url: '/ilabcollab/gateway/secure/returnTheBook',
             data: {bookId: $scope.book._id},
             method: 'POST'
         }).then(function success(res){
@@ -74,7 +74,7 @@ app.controller('bookdetailController', function($rootScope, $scope){
 
     $scope.toggleUpvote = function(){
         $rootScope.http({
-            url: '/site/gateway/secure/toggleUpvote',
+            url: '/ilabcollab/gateway/secure/toggleUpvote',
             data: {bookId: $scope.book._id},
             datatype: 'json',
             method: 'POST'

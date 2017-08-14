@@ -114,7 +114,7 @@ app.controller('chatController', function ($rootScope, $scope, $window) {
         }
         $rootScope.http({
             method: 'GET',
-            url: '/site/gateway/memeSearch?q=' + query,
+            url: '/ilabcollab/gateway/memeSearch?q=' + query,
             datatype: 'json'
         }).then(function success(res) {
             if (res.data.success && res.data.data)

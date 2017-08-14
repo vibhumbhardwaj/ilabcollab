@@ -57,7 +57,7 @@ app.controller('newRoomController', function ($rootScope, $scope) {
                     $rootScope.http({
                         method: 'POST',
                         data: datatosend,
-                        url: '/site/gateway/createRoom',
+                        url: '/ilabcollab/gateway/createRoom',
                         datatype: 'json'
                     }).then(function success(res) {
                         if (res.data.success)
@@ -82,7 +82,7 @@ app.controller('newRoomController', function ($rootScope, $scope) {
 
     socket.on('room added', function () {
         window.alert('Room Added successfully! Login to continue');
-        window.open('/site/collab', '_self');
+        window.open('/ilabcollab/collab', '_self');
     });
 
     socket.on('unauthorised', function (msg) {

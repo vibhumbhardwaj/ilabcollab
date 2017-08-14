@@ -11,13 +11,13 @@ app.run(function ($rootScope, $http) {
     }
 
     $rootScope.visitBooks = function(){
-        window.open('/site/books');
+        window.open('/ilabcollab/books');
     }
 
     $rootScope.logoutUser = function () {
         $http({
             method: 'GET',
-            url: '/site/gateway/logout'
+            url: '/ilabcollab/gateway/logout'
         }).then(function success(res){
             if(res.data.success)
                 window.localStorage.clear();
@@ -55,7 +55,7 @@ app.run(function ($rootScope, $http) {
         //  $rootScope.setHeader();
         $rootScope.http({
             method: 'POST',
-            url: '/site/gateway/secure/iLikeThis',
+            url: '/ilabcollab/gateway/secure/iLikeThis',
             datatype: 'json',
             headers: {
                 'Content-Type': 'application/json'

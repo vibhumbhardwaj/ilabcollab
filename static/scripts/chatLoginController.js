@@ -39,14 +39,14 @@ app.controller('chatLoginController', function ($rootScope, $scope) {
         if (!$scope.private || publicRoom) {
             if (($scope.chatRoom && $scope.password && $scope.userName) || (publicRoom && $scope.userName))
                 datatosend = { chatRoom: $scope.chatRoom, password: $scope.password, userName: $scope.userName, token: token };
-            url = '/site/gateway/authoriseChatAccess';
+            url = '/ilabcollab/gateway/authoriseChatAccess';
         }
         else {
             if ($scope.passwordRequired && $scope.chatRoom && $scope.password)
                 datatosend = { chatRoom: $scope.chatRoom, password: $scope.password, token: token };
             else if (!$scope.passwordRequired && $scope.chatRoom)
                 datatosend = { chatRoom: $scope.chatRoom, token: token };
-            url = '/site/gateway/secure/authoriseChatAccess';
+            url = '/ilabcollab/gateway/secure/authoriseChatAccess';
         }
 
         if (datatosend)
@@ -58,7 +58,7 @@ app.controller('chatLoginController', function ($rootScope, $scope) {
             }).then(function success(res) {
                 if (res.data.success) {
                     window.localStorage.chatToken = res.data.token;
-                    window.open('/site/collab/' + $scope.chatRoom.toLowerCase(), '_self');
+                    window.open('/ilabcollab/collab/' + $scope.chatRoom.toLowerCase(), '_self');
                 }
                 else {
                     $scope.invalid = true;

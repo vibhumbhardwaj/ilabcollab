@@ -7,7 +7,7 @@ app.controller('loginController', function($rootScope, $scope){
         var datatosend = {username: $scope.username, password: $scope.password};
         $rootScope.http({
             method: 'POST',
-            url: '/site/gateway/authenticate',
+            url: '/ilabcollab/gateway/authenticate',
             datatype: 'json',
             data: datatosend,
             headers: {
@@ -21,7 +21,7 @@ app.controller('loginController', function($rootScope, $scope){
                 //window.localStorage.name = res.data.user.name;
                 $scope.chill = false;
                 console.log('saved token as ' + window.localStorage.token);
-                window.open("/site/books", "_self");
+                window.open("/ilabcollab/books", "_self");
             }
             if(res.data.removeCacheRequired)
                 window.localStorage.clear();

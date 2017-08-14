@@ -94,7 +94,7 @@ module.exports = function (server) {
         }
         else {
             console.log('catch me');
-            socket.emit('unauthorised', '<h1>Uh Oh. Wrong Room I suppose.</h1><br>N.B. You can always access public chat by clicking here: <a href="/site/chat" class="w3-button vb-btn">here.</a>');
+            socket.emit('unauthorised', '<h1>Uh Oh. Wrong Room I suppose.</h1><br>N.B. You can always access public chat by clicking here: <a href="/ilabcollab/chat" class="w3-button vb-btn">here.</a>');
             socket.disconnect(true);
         }
 
@@ -107,7 +107,7 @@ module.exports = function (server) {
         //         socket.emit('reconnect', chatRooms);
         //     }
         //     else
-        //         socket.emit('unauthorised', '<h1>Uh Oh. Wrong Room I suppose.</h1><br>N.B. If you\'re looking for public room, request access from here: <a href="/site/chat">here.</a>');
+        //         socket.emit('unauthorised', '<h1>Uh Oh. Wrong Room I suppose.</h1><br>N.B. If you\'re looking for public room, request access from here: <a href="/ilabcollab/chat">here.</a>');
         // });
 
         socket.on('chat message', function (msg) {

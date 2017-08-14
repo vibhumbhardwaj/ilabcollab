@@ -40,9 +40,9 @@ app.get('/changelog', (req, res) =>{
     })
 })
 
-app.use('/site',viewRouter);
-app.use('/site/gateway', apiRouter);
-app.use('/site/gateway/secure', apiRouterSecured);
+app.use('/ilabcollab',viewRouter);
+app.use('/ilabcollab/gateway', apiRouter);
+app.use('/ilabcollab/gateway/secure', apiRouterSecured);
 router.get('/',function(req,res){
     res.render('login.html');
 });

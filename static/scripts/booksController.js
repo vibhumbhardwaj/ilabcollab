@@ -30,7 +30,7 @@ app.controller('booksController', function ($rootScope, $scope) {
         $scope.querysearch = ($scope.search) ? '&q='+ $scope.search : '';
         $rootScope.http({
             method: 'GET',
-            url: '/site/gateway/getBooks?v=' + $scope.numberofbooks + $scope.querysearch,
+            url: '/ilabcollab/gateway/getBooks?v=' + $scope.numberofbooks + $scope.querysearch,
             datatype: 'json',
         }).then(function success(res) {
             console.log(res.data);
