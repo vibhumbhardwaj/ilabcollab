@@ -6,8 +6,25 @@ app.controller('chatController', function ($rootScope, $scope, $window) {
     $scope.userName = $rootScope.getNameForChat(chatRoom);
     $scope.imageResult = [];
     $scope.memeShow = false;
+    $scope.cards = [];
+    $scope.card = {
+        name: "default",
+    }
 
+    $scope.simpleTime = "";
+    $scope.getTime = (stamp) => {
+        let d = new Date(stamp);
+        $scope.simpleTime = d.toDateString() + ' | ' + d.getHours() + ':' + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes();
+        //$scope.simpleTime = new Date(stamp).toUTCString();
+        // $scope.$apply();
+    }
 
+    var handleOops = (err) => {
+        $scope.authorised = false;
+        document.getElementById('errorMessage').innerHTML = err;
+        $scope.$apply();
+        throw new Error('oops');
+    }
     //var socketPrimary = io({ 'chatRoom': chatRoom, query: "auth_token=" + window.localStorage.chatToken + "&chatRoom=" + chatRoom, forceNew: true });
     //socketPrimary.emit('newlyAdded', chatRoom);
     /**initialisation complete.**/
@@ -17,8 +34,11 @@ app.controller('chatController', function ($rootScope, $scope, $window) {
     $scope.allowedRooms.forEach(function (room, index) {
         if (room.chatRoom == chatRoom)
             primaryIndex = index;
-        socketArray.push({ index: index, chatRoom: room.chatRoom, socket: io('/chat',{ query: "auth_token=" + window.localStorage.chatToken + "&chatRoom=" + room.chatRoom, forceNew: true }) });
+        socketArray.push({ index: index, chatRoom: room.chatRoom, socket: io('/chat', { query: "auth_token=" + window.localStorage.chatToken + "&chatRoom=" + room.chatRoom, forceNew: true }) });
     });
+    if (primaryIndex == undefined) {
+        return;
+    }
 
     socketArray.forEach(function (socketObject) {
         socketObject.socket.on('newMessage', function (msg) {
@@ -29,6 +49,22 @@ app.controller('chatController', function ($rootScope, $scope, $window) {
                 document.getElementById('chatSideBar').style.display = 'none';
                 document.getElementById('chatSideBar').style.display = 'block';
             }
+            else {
+                $scope.messages.push(msg);
+                $scope.$apply();
+
+                if (!document.hasFocus())
+                    if ($scope.alertCount)
+                        $scope.alertCount++;
+                    else
+                        $scope.alertCount = 1;
+
+                if ($scope.notificationEnabled)
+                    window.alert('new Message!');
+            }
+        });
+        socketObject.socket.on('unauthorised', function (err) {
+            handleOops(err);
         });
     });
 
@@ -40,9 +76,9 @@ app.controller('chatController', function ($rootScope, $scope, $window) {
             sidebar.style.display = 'none';
     }
 
-    $scope.toggleMemeSearch = function(){
+    $scope.toggleMemeSearch = function () {
         var memeDiv = document.getElementById('memeDiv');
-        if(memeDiv.style.display == 'none')
+        if (memeDiv.style.display == 'none')
             memeDiv.style.display = '';
         else
             memeDiv.style.display = 'none';
@@ -50,10 +86,15 @@ app.controller('chatController', function ($rootScope, $scope, $window) {
 
 
 
-    $scope.sendImage = function(imagePath) {
+    $scope.sendImage = function (imagePath) {
         $scope.currentMessage = imagePath;
         $scope.send(true);
         $scope.hideMemeSearch();
+    }
+
+    $scope.updateCard = (cardName) => {
+        cardName = 'default';
+
     }
 
     $scope.send = function (imageBoolean) {
@@ -62,7 +103,8 @@ app.controller('chatController', function ($rootScope, $scope, $window) {
                 image: imageBoolean,
                 message: $scope.currentMessage,
                 chatRoom: chatRoom,
-                userName: $scope.userName
+                userName: $scope.userName,
+                timestamp: Date.now()
             }
             socketArray[primaryIndex].socket.emit('chat message', msg);
             $scope.messages.push(msg);
@@ -70,26 +112,6 @@ app.controller('chatController', function ($rootScope, $scope, $window) {
         }
     }
 
-
-    socketArray[primaryIndex].socket.on('newMessage', function (msg) {
-        $scope.messages.push(msg);
-        $scope.$apply();
-
-        if (!document.hasFocus())
-            if ($scope.alertCount)
-                $scope.alertCount++;
-            else
-                $scope.alertCount = 1;
-
-        if ($scope.notificationEnabled)
-            window.alert('new Message!');
-    });
-
-    socketArray[primaryIndex].socket.on('unauthorised', function (err) {
-        $scope.authorised = false;
-        document.getElementById('errorMessage').innerHTML = err;
-        $scope.$apply();
-    });
 
     socketArray[primaryIndex].socket.on('previousMessages', function (msg) {
         //msg.chatRoom
@@ -104,20 +126,20 @@ app.controller('chatController', function ($rootScope, $scope, $window) {
 
     $scope.memeSearch = function () {
         query = $scope.memeInput;
-        if(!query){
+        if (!query) {
             $scope.imageResult = [];
             return;
         }
         $rootScope.http({
             method: 'GET',
-            url: '/site/gateway/memeSearch?q=' + query,
+            url: '/ilabcollab/gateway/memeSearch?q=' + query,
             datatype: 'json'
         }).then(function success(res) {
             if (res.data.success && res.data.data)
                 $scope.imageResult = res.data.data;
-            else{
+            else {
                 $scope.imageResult = [];
-                document.getElementById('memes').innerHTML = '<h1>Uh. Oh.</h1>' + res.data.message;    
+                document.getElementById('memes').innerHTML = '<h1>Uh. Oh.</h1>' + res.data.message;
             }
         }, function failure(err) {
             $scope.imageResult = [];
