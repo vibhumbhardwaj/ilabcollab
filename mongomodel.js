@@ -49,6 +49,20 @@ var schemaForBooks = new Schema({
     downvoted_by_users: [inlineUserSchema]
 });
 
+var schemaForCard = new Schema({
+    name: {type: String, unique: true},
+    content: [],
+    timestamp: {type: Number, default: Date.now()}
+})
+
+var schemaForMessages = new Schema({
+    image: Boolean,
+    message: String,
+    chatRoom: String,
+    userName: String,
+    timestamp: {type: Number, default: Date.now()}
+})
+
 var schemaForChatRooms = new Schema({
     chatRoom: {type: String, unique: true},
     password: String,
@@ -56,8 +70,11 @@ var schemaForChatRooms = new Schema({
     allowedUsers: [inlineUserSchema],
     showPrevious: Boolean,
     currentUsers: [],
-    messages: []
+    messages: [schemaForMessages],
+    cards: [schemaForCard]
 })
+
+
 
 var ChatRoom = mongoose.model('ChatRoom', schemaForChatRooms);
 var Book = mongoose.model('Book', schemaForBooks);

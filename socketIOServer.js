@@ -114,7 +114,7 @@ module.exports = function (server) {
             var index = socketHelper.getRoomIndex(allowedRooms, msg.chatRoom);
             if (index == localRoomIndex && msg.userName == userName) {
                 var chatRoom = msg.chatRoom;
-
+                msg.timestamp = Date.now();
                 console.log('................saving message supposedly........................\n' + msg.userName + '@ ' + chatRoom + ' - ' + msg.message + '\n');
                 socketHelper.createBackup(msg, chatRoom);
 

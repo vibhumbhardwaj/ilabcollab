@@ -5,6 +5,31 @@
         #memediv {
             box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)
         }
+        .tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 220px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+    top: -5px;
+    left: 105%;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
     </style>
 
     <link rel="stylesheet" href="/style/app.css">
@@ -75,7 +100,7 @@
         </div>
         <div ng-repeat="msg in messages | orderBy:'+':true track by $index">
 
-            <b>{{msg.userName}}</b>: <span ng-if="!msg.image">{{msg.message}}</span><span ng-if="msg.image"><img ng-src="{{msg.message}}" height="100px"></span>
+            <b><span class="tooltip" ng-mouseover="getTime(msg.timestamp)">{{msg.userName}}<span class="tooltiptext">{{simpleTime}}</span></span></b>: <span ng-if="!msg.image">{{msg.message}}</span><span ng-if="msg.image"><img ng-src="{{msg.message}}" height="100px"></span>
         </div>
 
 
