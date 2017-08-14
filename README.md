@@ -1,13 +1,17 @@
-# ilabcollab -- Version 6.3
+# ilabcollab -- Version 6.9
 Current working url: http://tiny.cc/ilabcollab
 
 
 ***Upcoming***:
 1. persistent data between server restarts. <--done in V6
-2. Cards implementation for collab space. (along with realtime sharing and MEMEs)
-3. One Page for all the rooms (No reloads for room change)
+2. Cards implementation for collab space. (along with realtime sharing and MEMEs) <-- 7
+3. One Page for all the rooms (No reloads for room change) <-- 7
 4. Timestamp for messages.
 5. Different DB for development.
+
+**Version 6.9** -->
+1. Getting ready for upcoming one page thingy.
+2. Some bugs bunny.
 
 **version 6.2** -->
 1. Stop supporting older browsers. It's high time.
