@@ -71,7 +71,9 @@ var schemaForChatRooms = new Schema({
     showPrevious: Boolean,
     currentUsers: [],
     messages: [schemaForMessages],
-    cards: [schemaForCard]
+    past: [String],
+    present: [String],
+    future: [String]
 })
 
 

@@ -15,7 +15,7 @@ var initialiseChatRooms = function () {
         if(!err)
             chatRoomsDB.forEach(function (room) {
                 room = room._doc;
-                chatRooms.push({ chatRoom: room.chatRoom, messages: room.messages, showPrevious: room.showPrevious, private: room.private, cards: room.cards });
+                chatRooms.push({ chatRoom: room.chatRoom, messages: room.messages, showPrevious: room.showPrevious, private: room.private, past: room.past, future: room.future, present: room.present });
             }, this);
     });
 

@@ -109,7 +109,17 @@ module.exports = function (server) {
         //     else
         //         socket.emit('unauthorised', '<h1>Uh Oh. Wrong Room I suppose.</h1><br>N.B. If you\'re looking for public room, request access from here: <a href="/ilabcollab/chat">here.</a>');
         // });
-
+        socket.on('pastUpdate', (str) => { //done task
+           // delete it from present array and push to past array!! give out pastupdate to clients too. they'll delete from present themselves.
+        })
+        socket.on('futureUpdate', (str) => { //new task
+           // add it to future array. 
+        })
+        socket.on('presentUpdate', (str) => { //working task
+           // delete it from future array and push to present array!! give out presentupdate to clients too.
+        })
+        
+      
         socket.on('chat message', function (msg) {
             var index = socketHelper.getRoomIndex(allowedRooms, msg.chatRoom);
             if (index == localRoomIndex && msg.userName == userName) {
