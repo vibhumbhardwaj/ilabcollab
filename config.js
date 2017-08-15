@@ -3,6 +3,6 @@ module.exports = {
     mongoIdRegex: /^[A-Za-z0-9]{24}$/,
     alphaNumericRegex: /^[a-zA-Z0-9_]{1,}$/,
     searchQueryRegex: /^[a-zA-z0-9 _@#]{1,}$/,
-    secretKey : 'I am the secret key madafakaa.',
+    secretKey : 'I am the secret key.',
     ImageAPIKey: '11a457f48752418ab1b8b21ff727aba9'
 }
