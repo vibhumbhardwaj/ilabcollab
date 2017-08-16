@@ -15,7 +15,13 @@ var initialiseChatRooms = function () {
         if(!err)
             chatRoomsDB.forEach(function (room) {
                 room = room._doc;
-                chatRooms.push({ chatRoom: room.chatRoom, messages: room.messages, showPrevious: room.showPrevious, private: room.private, past: room.past, future: room.future, present: room.present });
+                chatRooms.push({
+                  chatRoom: room.chatRoom,
+                  messages: room.messages,
+                  showPrevious: room.showPrevious,
+                  private: room.private,
+                  cards: room.cards
+                });
             }, this);
     });
 
@@ -53,8 +59,19 @@ var verifyToken = function(encryptedToken, chatRoom){
 var saveMessageToDB = (msg, chatRoom) => {
     adapter.saveChatMessage(chatRoom, msg, (err, chatRoom) =>{
         if(!err) console.log('[INFO] ALL good man. Database updated.');
-        else console.error('[ERROR] shit happened while updating db with new messages -->' + error.toString());
+        else console.error('[ERROR] shit happened while updating db with new messages -->' + err.toString());
     })
+}
+
+var addToFuture = (str, chatRoom) => {
+  adapter.addToFuture(str, chatRoom, (err, chatRoom)=>{
+    if(!err) console.log('[INFO] ALL good man. Database updated.');
+    else console.error('[ERROR] shit happened while updating db with new task -->' + err.toString());
+  })
+}
+
+var setCardTimeStamp = (chatRoom) => {
+  chatRoom.timeStamp = Date.now();
 }
 
 module.exports = {
@@ -63,5 +80,7 @@ module.exports = {
     getRoomIndex: getRoomIndex,
     isAllowed: isAllowed,
     getChatRoomList: getChatRoomList,
-    createBackup: saveMessageToDB
+    createBackup: saveMessageToDB,
+    addToFuture: addToFuture,
+    setCardTimeStamp: setCardTimeStamp
 }

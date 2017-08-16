@@ -36,6 +36,12 @@ var getChatRooms = function(bc) {
 }
 
 var createChatRoom = function(chatRoom, bc){
+    chatRoom.cards = {
+      past : [],
+      present : [],
+      future: [],
+      timestamp: Date.now()
+    }
     model.ChatRoom.create(chatRoom, function(err, createdRoom){
         bc(err,createdRoom);
     })
@@ -45,6 +51,16 @@ var findChatRoom = function (findthis, bc) {
     model.ChatRoom.findOne(findthis, function (err, chatRoom){
         bc(err, chatRoom);
     })
+}
+
+var addToFuture = (str, chatRoom, bc) => {
+  model.ChatRoom.findOneAndUpdate({'chatRoom': chatRoom}, {$push: {"cards.future": str}, $set: {"cards.timestamp": Date.now()}}, {new: true}, (err, updatedChatRoom) => {
+    if(err)
+      console.error('[ERROR] Couldn\'t add to future card. was saving this --> ' + str + ' @' + chatRoom);
+    else
+      console.log('[INFO] Future task added successfully to ' + chatRoom);
+    bc(err, updatedChatRoom);
+  })
 }
 
 var saveChatMessage = (chatRoom, msg, bc) => {
@@ -104,5 +120,6 @@ module.exports = {
     findChatRoom: findChatRoom,
     getChatRooms: getChatRooms,
     createChatRoom: createChatRoom,
-    saveChatMessage: saveChatMessage
+    saveChatMessage: saveChatMessage,
+    addToFuture: addToFuture
 }
