@@ -4,7 +4,7 @@ var shared = require('./static/shared');
 router = express.Router(); 
 
 router.use(function(req,res,next){
-    console.log('[INFO]@VIEW ' + req.sessionID + ' @ time: ' + new Date().toLocaleTimeString() + ' accessed this page:  ' + req.method +' --> ' + req.url.toString());
+    console.log('[INFO]@VIEW ' + req.sessionID + ' @ time: ' + new Date().toUTCString() + ' accessed this page:  ' + req.method +' --> ' + req.url.toString());
     console.log(req.session.user);
     next();
 })
