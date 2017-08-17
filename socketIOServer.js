@@ -13,7 +13,7 @@ module.exports = function (server) {
         socket.on('findAvailability', function (chatRoom) {
             console.log('[INFO] finding availability of room --> ' + chatRoom);
             var index;
-            let match = chatRoom.match(config.searchQueryRegex)
+            var match = chatRoom.match(config.searchQueryRegex)
             if ( match && match.length == 1)
                 index = chatRooms.findIndex(function (ele) {
                     return ele.chatRoom == chatRoom;
@@ -22,11 +22,11 @@ module.exports = function (server) {
                 socket.emit('availabilityResult', true);
             else
                 socket.emit('availabilityResult', false);
-            console.log('[INFO] index found as: ' + index + ' <-- undefined means not allowed');
+            console.log('[INFO] index found as: ' + index + ' <-- undefined means not allowed | 0 is good');
         })
 
         socket.on('new room', function (chatRoom) {
-            console.log('[INFO] Chatroom is just its name. right? And not the whole object --> ' + chatRoom);
+            console.log('[INFO] Chatroom is just its name. right? And not the whole object --> ' + chatRoom); // yea.
             chatRoom = chatRoom.toLowerCase();
             socketHelper.getChatRoom(chatRoom, function (err, room) {
                 if (!err && room) {
@@ -89,7 +89,7 @@ module.exports = function (server) {
             userName = allowedRooms[localRoomIndex].userName;
             socket.join(chatRoom);
             if (chatRooms[globalRoomIndex].showPrevious)
-                socket.emit('previousMessages', chatRooms[globalRoomIndex]);
+                socket.emit('previousMessages', chatRooms[globalRoomIndex].messages);
 
         }
         else {
@@ -98,6 +98,7 @@ module.exports = function (server) {
             socket.disconnect(true);
         }
 
+      
         console.log(userName + '............................im in here.......................' + chatRoom);
 
         // socket.on('newlyAdded', function (chatRoom) {
@@ -109,12 +110,34 @@ module.exports = function (server) {
         //     else
         //         socket.emit('unauthorised', '<h1>Uh Oh. Wrong Room I suppose.</h1><br>N.B. If you\'re looking for public room, request access from here: <a href="/ilabcollab/chat">here.</a>');
         // });
-
+        socket.on('pastUpdate', (str) => { //done task
+            // delete it from present array and push to past array!! give out pastupdate to clients too. they'll delete from present themselves.
+            
+        })
+        socket.on('needCardsUpdate', () =>{
+          "use strict";
+          let cards = chatRooms[globalRoomIndex].cards;
+          socket.emit('getCardsUpdate', cards);
+        })
+        
+        socket.on('futureUpdate', (str) => { //new task
+            // add it to future array.
+            chatRooms[globalRoomIndex].cards.future.push(str);
+            socketHelper.setCardTimeStamp(chatRooms[globalRoomIndex]);
+            socketHelper.addToFuture(str, chatRoom);
+            socket.broadcast.to(chatRoom).emit('futureUpdate', str);
+        })
+        socket.on('presentUpdate', (str) => { //working task
+            // delete it from future array and push to present array!! give out presentupdate to clients too.
+        })
+        
+      
         socket.on('chat message', function (msg) {
             var index = socketHelper.getRoomIndex(allowedRooms, msg.chatRoom);
             if (index == localRoomIndex && msg.userName == userName) {
                 var chatRoom = msg.chatRoom;
                 msg.timestamp = Date.now();
+                console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> time is ' + new Date(msg.timestamp).toUTCString());
                 console.log('................saving message supposedly........................\n' + msg.userName + '@ ' + chatRoom + ' - ' + msg.message + '\n');
                 socketHelper.createBackup(msg, chatRoom);
 

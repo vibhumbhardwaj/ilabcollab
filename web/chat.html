@@ -82,7 +82,32 @@
             <!-- <span class="w3-btn w3-right vb-btn" ng-click="send()"><b>Send</b></span><br> -->
         </form>
         <br>
-        <div class="w3-btn" ng-click="toggleMemeSearch()" id="memeButton" style="z-index: 1; position: absolute; right: 2; background: #475E47; color: white">More than a :)</div>
+        <div class="w3-btn" ng-click="toggleMemeSearch($event)" id="memeButton" style="z-index: 1; position: absolute; right: 2; background: #475E47; color: white">More than a :)</div>
+        <br><br><br>
+        <div class="w3-btn vb-btn" id="cards" style="z-index: 1; position: absolute; right: 2; width: 18%;">
+          <h4 style="color: #475E47">
+            Tasks
+          </h4>
+          <div class="w3-btn" id="card1" ng-click="toggleTasksDiv($event)" style="width: 100%; text-align: right; border-bottom: 1px solid #475E47;">Backlog</div>
+          <br><br>
+          <div class="w3-btn" id="card2" ng-click="toggleMemeSearch($event)" style="width: 100%; text-align: right; border-bottom: 1px solid #475E47;">Working on 'em</div>
+          <br><br>
+          <div class="w3-btn" id="card3" ng-click="toggleMemeSearch($event)" style="width: 100%; text-align: right; border-bottom: 1px solid #475E47;">Done B-)</div>
+        </div>
+        <div id="tasksDiv" class="w3-animate-right w3-btn" style=" z-index: 2; position: absolute; width: 350px; right: 2; overflow: auto; height: calc(100vh - 200px); display: none; background: white">
+          <span class="w3-btn w3-right" ng-click="toggleTasksDiv()"><b>X</b></span>
+          <form ng-submit="addFuture()">
+            <input type="text" ng-model="newTask" class="w3-input" placeholder="Add New">  
+          </form>
+          <!--<ul style='text-align: left; display: hidden;'>
+            
+          </ul>-->
+          <ul style='text-align: left; display: block;'>
+            <li>This is not done :O</li>
+            <li>And That too !!! OMG</li>
+            <li ng-repeat="futureTask in cards.future">{{futureTask}}</li>
+          </ul>
+        </div>
         <div id="memeDiv" class="w3-animate-right w3-btn" style=" z-index: 2; position: absolute; width: 250px; right: 2; overflow: auto; height: calc(100vh - 200px); display: none; background: white">
             <div style="z-index:3; background: white; width: 100%">
                 <span class="w3-btn w3-right" ng-click="toggleMemeSearch()"><b>X</b></span>
@@ -98,11 +123,11 @@
                 </ul>
             </div>
         </div>
+  <div id="messagesDiv" style="position: absolute">
         <div ng-repeat="msg in messages | orderBy:'+':true track by $index">
-
             <b><span class="tooltip" ng-mouseover="getTime(msg.timestamp)">{{msg.userName}}<span class="tooltiptext">{{simpleTime}}</span></span></b>: <span ng-if="!msg.image">{{msg.message}}</span><span ng-if="msg.image"><img ng-src="{{msg.message}}" height="100px"></span>
         </div>
-
+  </div>
 
 
     </div>

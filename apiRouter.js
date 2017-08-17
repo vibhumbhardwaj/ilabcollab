@@ -11,7 +11,7 @@ var findthis = {};
 
 //Implement that loggedin User here also.
 router.use(function (req, res, next) {
-    console.log('[INFO]@API ' + req.sessionID + ' @ time: ' + new Date().toLocaleTimeString() + ' accessed this page:  ' + req.method + ' --> ' + req.url.toString());
+    console.log('[INFO]@API ' + req.sessionID + ' @ time: ' + new Date().toUTCString() + ' accessed this page:  ' + req.method + ' --> ' + req.url.toString());
     next();
 })
 

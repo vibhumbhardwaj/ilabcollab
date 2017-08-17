@@ -6,11 +6,13 @@ app.controller('chatController', function ($rootScope, $scope, $window) {
     $scope.userName = $rootScope.getNameForChat(chatRoom);
     $scope.imageResult = [];
     $scope.memeShow = false;
-    $scope.cards = [];
-    $scope.card = {
-        name: "default",
+    $scope.cards = {
+      future: [],
+      present: [],
+      past: [],
+      timestamp: 0
     }
-
+    var $ = ( id )=> { return document.getElementById( id ) }
 
     $scope.simpleTime = "";
     $scope.getTime = (stamp) => {
@@ -77,8 +79,16 @@ app.controller('chatController', function ($rootScope, $scope, $window) {
         else
             sidebar.style.display = 'none';
     }
+    
+    $scope.toggleTasksDiv = () => {
+      var tasksDiv = $('tasksDiv');
+      if (tasksDiv.style.display == 'none')
+            tasksDiv.style.display = '';
+        else
+            tasksDiv.style.display = 'none'; 
+    }
 
-    $scope.toggleMemeSearch = function () {
+    $scope.toggleMemeSearch = () => {
         var memeDiv = document.getElementById('memeDiv');
         if (memeDiv.style.display == 'none')
             memeDiv.style.display = '';
@@ -88,16 +98,35 @@ app.controller('chatController', function ($rootScope, $scope, $window) {
 
 
 
-    $scope.sendImage = function (imagePath) {
+    $scope.sendImage = (imagePath) => {
         $scope.currentMessage = imagePath;
         $scope.send(true);
-        $scope.hideMemeSearch();
+        $scope.toggleMemeSearch();
+        $scope.imageResult = [];
+        $scope.memeInput = '';
     }
 
-    $scope.updateCard = (cardName) => {
-        cardName = 'default';
-
+    $scope.addFuture = () => {
+      if($scope.newTask){
+        socketArray[primaryIndex].socket.emit('futureUpdate', $scope.newTask);
+        $scope.cards.future.push($scope.newTask);
+        $scope.newTask = '';
+      }
     }
+    
+    socketArray[primaryIndex].socket.on('getFuture', function (str) {
+      $scope.cards.future.push(str);
+      $scope.$apply();
+    })
+    
+    $scope.refreshCards = () =>{
+      socketArray[primaryIndex].socket.emit('needCardsUpdate');
+    }
+    
+    socketArray[primaryIndex].socket.on('getCardsUpdate', (cards) =>{
+      $scope.cards = cards;
+      //$scope.$apply(); Do I really really need this one.?
+    })
 
     $scope.send = function (imageBoolean) {
         if ($scope.currentMessage) {
@@ -113,14 +142,24 @@ app.controller('chatController', function ($rootScope, $scope, $window) {
             $scope.currentMessage = "";
         }
     }
-
-
+    
     socketArray[primaryIndex].socket.on('previousMessages', function (msg) {
         //msg.chatRoom
-        $scope.messages = msg.messages;
+        $scope.messages = msg;
         $scope.messages.push({ userName: '', message: '::::::::::::::::::::::::::::::::::  Previous Messages >>>' });
         $scope.$apply();
     });
+    (()=>{
+      "use strict";
+      $scope.refreshCards();
+      window.onload = ()=>{
+        let height = $('memeButton').offsetTop;
+        let card1 = $('card1').offsetTop;
+        let card2 = $('card2').offsetTop;
+        let card3 = $('card3').offsetTop;
+        $('messagesDiv').style.top = $('memeDiv').style.top = $('tasksDiv').style.top = height;
+      }
+    })();
 
     $window.onfocus = function () {
         delete $scope.alertCount;

@@ -49,11 +49,20 @@ var schemaForBooks = new Schema({
     downvoted_by_users: [inlineUserSchema]
 });
 
+var schemaForCards = new Schema({
+    past: [String],
+    present: [String],
+    future: [String],
+    otherCards: [],
+    timestamp: {type: Number, default: Date.now()}
+})
+/* will need sometime later. perhaps
 var schemaForCard = new Schema({
     name: {type: String, unique: true},
     content: [],
     timestamp: {type: Number, default: Date.now()}
 })
+*/
 
 var schemaForMessages = new Schema({
     image: Boolean,
@@ -71,7 +80,7 @@ var schemaForChatRooms = new Schema({
     showPrevious: Boolean,
     currentUsers: [],
     messages: [schemaForMessages],
-    cards: [schemaForCard]
+    cards: schemaForCards
 })
 
 

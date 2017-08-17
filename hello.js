@@ -1,6 +1,6 @@
 var request = require('request');
 
-query = 'cat';
+query = 'catanddog';
 
 var options = {
     url: 'https://api.cognitive.microsoft.com/bing/v5.0/images/search?q=' + query + '%20meme&aspect=square',

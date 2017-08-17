@@ -19,7 +19,7 @@ router.use(function (req, res, next) {
 
         }
         var tokenFromCookies = req.cookies.Authorization;
-        console.log('[INFO]@SECURED ' + req.sessionID + ' @ time: ' + new Date().toLocaleTimeString() + ' accessed this page:  ' + req.method + ' --> ' + req.url.toString());
+        console.log('[INFO]@SECURED ' + req.sessionID + ' @ time: ' + new Date().toUTCString() + ' accessed this page:  ' + req.method + ' --> ' + req.url.toString());
         console.log('[INFO] Validating Token: ' + tokenFromCookies);
         jwt.verify(tokenFromCookies, config.secretKey, function (err, decodedToken) {
             if (err) {

@@ -28,7 +28,7 @@
 
         <form ng-submit="validateAndContinue(form1)" name="form1">
             <div>
-                <h1>Create new Collab-Room</h1>
+                <h1>Create new Collab-Room for your Project</h1>
             </div>
             <div ng-show="invalid" style="color: red">
                 <h5>{{errorMessage}}</h5>
@@ -62,7 +62,7 @@
 
                 <div id="optionsDiv">
                     <span class="w3-tiny">Other Options</span><br>
-                    <input type="checkbox" class="w3-check" ng-model="showPrevious"> New connections to the room should be able to see previous messages.<br>
+                    <input type="checkbox" class="w3-check" ng-model="showPrevious"> New connections to the room should be able to see previous messages. [Recommended] Why am I even asking you this?<br>
                     <span ng-show="!showPrevious" class="w3-small"><br><b>N.B.</b> <i>Window Refreshes are also treated as new connection. I thought you should know.</i><br></span>                  
                     <br><br>
                 </div>

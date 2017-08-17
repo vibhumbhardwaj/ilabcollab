@@ -16,7 +16,7 @@ app.engine('html',require('ejs').renderFile);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 //app.use(morgan('dev'));
-app.use(cookieParser('O yea mofo'));
+app.use(cookieParser('O yea'));
 app.use(session);
 
 app.use(express.static('./static'));
