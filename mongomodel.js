@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var config = require('./config.js');
 
-mongoose.connect(config.connectionString);
+mongoose.connect(process.env.dbUri, {user: process.env.dbUser, pass: process.env.dbPass});
 var db = mongoose.connection;
 
 db.addListener('error',function(err){
