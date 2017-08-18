@@ -71,6 +71,21 @@ app.controller('chatController', function ($rootScope, $scope, $window) {
             handleOops(err);
         });        
     });
+  
+    $scope.switchRoom = (newRoom) =>{
+      //write here
+      chatRoom = newRoom;
+      $scope.messages = [];
+      $scope.messages.push({ userName: '', message: '::::::::::::::::::::::::::::::::::  Requesting server for messages' });
+      //better check if show prebvious is enabled, if not customise the error message...
+      primaryIndex = $scope.allowedRooms.findIndex((x)=>{
+        return x.chatRoom == newRoom;
+      })
+      if($scope.allowedRooms[primaryIndex].showPrevious)
+        $scope.messages.push({ userName: '', message: '::::::::::::::::::::::::::::::::::  Requesting server for messages' });
+      socketArray[primaryIndex].socket.emit('needMessagesUpdate');
+      $scope.refreshCards();
+    }
 
     $scope.toggleSideBar = function () {
         var sidebar = document.getElementById('chatSideBar');
@@ -143,9 +158,9 @@ app.controller('chatController', function ($rootScope, $scope, $window) {
         }
     }
     
-    socketArray[primaryIndex].socket.on('previousMessages', function (msg) {
+    socketArray[primaryIndex].socket.on('previousMessages', function (msges) {
         //msg.chatRoom
-        $scope.messages = msg;
+        $scope.messages = msges;
         $scope.messages.push({ userName: '', message: '::::::::::::::::::::::::::::::::::  Previous Messages >>>' });
         $scope.$apply();
     });

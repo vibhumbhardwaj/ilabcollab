@@ -110,6 +110,12 @@ module.exports = function (server) {
         //     else
         //         socket.emit('unauthorised', '<h1>Uh Oh. Wrong Room I suppose.</h1><br>N.B. If you\'re looking for public room, request access from here: <a href="/ilabcollab/chat">here.</a>');
         // });
+      
+        socket.on('needMessagesUpdate', () =>{
+          if(chatRooms[globalRoomIndex].showPrevious)
+            socket.emit('previousMessages', chatRooms[globalRoomIndex].messages);
+        })
+      
         socket.on('needCardsUpdate', () =>{
           "use strict";
           let cards = chatRooms[globalRoomIndex].cards;

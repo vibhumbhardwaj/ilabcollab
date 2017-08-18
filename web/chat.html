@@ -61,7 +61,7 @@
     <div id="chatSideBar" class="w3-animate-right" style="z-index: 1;position: fixed; display: block; height: calc(100% - 40px);right: 0 ">
         <b>Active Rooms </b><br>
         <ul class="w3-ul w3-hoverable w3-btn vb-btn" style="width: 100%">
-            <li ng-repeat="room in allowedRooms">
+            <li ng-repeat="room in allowedRooms" ng-click="switchRoom(room.chatRoom)">
                 {{room.chatRoom}} <b>{{room.count}}</b>
             </li>
         </ul>
