@@ -110,10 +110,6 @@ module.exports = function (server) {
         //     else
         //         socket.emit('unauthorised', '<h1>Uh Oh. Wrong Room I suppose.</h1><br>N.B. If you\'re looking for public room, request access from here: <a href="/ilabcollab/chat">here.</a>');
         // });
-        socket.on('pastUpdate', (str) => { //done task
-            // delete it from present array and push to past array!! give out pastupdate to clients too. they'll delete from present themselves.
-            
-        })
         socket.on('needCardsUpdate', () =>{
           "use strict";
           let cards = chatRooms[globalRoomIndex].cards;
@@ -129,6 +125,34 @@ module.exports = function (server) {
         })
         socket.on('presentUpdate', (str) => { //working task
             // delete it from future array and push to present array!! give out presentupdate to clients too.
+            "use strict";
+            chatRooms[globalRoomIndex].cards.present.push(str);
+            let index = chatRooms[globalRoomIndex].cards.future.findIndex((x) =>{
+              return x == str;
+            });
+            chatRooms[globalRoomIndex].cards.future.splice(index, 1);
+            // added and deleted. same needs to be done at database level though.
+            socketHelper.addToPresent(str, chatRoom); //done that too. anything else?
+            //Alfred: What if this gets failed at database level later. Huh? What's your contingency there huh?
+            //Batman: Shut up Alfred, that's someone else's problem.
+            //Alfred: You are someone else. Remember?
+            //Batman: oh.
+            socket.broadcast.to(chatRoom).emit('presentUpdate', str);  
+            
+        })
+        
+        socket.on('PastUpdate', (str) => { //done task
+            // delete it from present array and push to past array!! give out pastupdate to clients too. they'll delete from present themselves.
+            "use strict";
+            chatRooms[globalRoomIndex].cards.present.push(str);
+            let index = chatRooms[globalRoomIndex].cards.future.findIndex((x) =>{
+              return x == str;
+            });
+            chatRooms[globalRoomIndex].cards.future.splice(index, 1);
+            // added and deleted. same needs to be done at database level though.
+            socketHelper.addToPast(str, chatRoom); //done that too. anything else?
+            socket.broadcast.to(chatRoom).emit('pastUpdate', str);  
+            
         })
         
       

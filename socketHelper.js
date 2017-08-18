@@ -70,6 +70,20 @@ var addToFuture = (str, chatRoom) => {
   })
 }
 
+var addToPresent = (str, chatRoom) => {
+  adapter.addToPresent(str, chatRoom, (err, chatRoom)=>{
+    if(!err) console.log('[INFO] ALL good man. Database updated.');
+    else console.error('[ERROR] shit happened while updating db with new task -->' + err.toString());
+  })
+}
+
+var addToPast = (str, chatRoom) => {
+  adapter.addToPast(str, chatRoom, (err, chatRoom)=>{
+    if(!err) console.log('[INFO] ALL good man. Database updated.');
+    else console.error('[ERROR] shit happened while updating db with new task -->' + err.toString());
+  })
+}
+
 var setCardTimeStamp = (chatRoom) => {
   chatRoom.timeStamp = Date.now();
 }
@@ -82,5 +96,7 @@ module.exports = {
     getChatRoomList: getChatRoomList,
     createBackup: saveMessageToDB,
     addToFuture: addToFuture,
-    setCardTimeStamp: setCardTimeStamp
+    setCardTimeStamp: setCardTimeStamp,
+    addToPresent: addToPresent,
+    addToPast: addToPast
 }

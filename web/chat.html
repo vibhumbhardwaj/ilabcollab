@@ -84,7 +84,8 @@
         <br>
         <div class="w3-btn" ng-click="toggleMemeSearch($event)" id="memeButton" style="z-index: 1; position: absolute; right: 2; background: #475E47; color: white">More than a :)</div>
         <br><br><br>
-        <div class="w3-btn vb-btn" id="cards" style="z-index: 1; position: absolute; right: 2; width: 18%;">
+        <div class="w3-btn vb-btn tooltip" ng-mouseover="getTime(cards.timestamp)" id="cards" style="z-index: 1; position: absolute; right: 2; width: 18%;">
+          <span class="tooltiptext">{{simpleTime}}</span>
           <h4 style="color: #475E47">
             Tasks
           </h4>

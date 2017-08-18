@@ -53,10 +53,26 @@ var findChatRoom = function (findthis, bc) {
     })
 }
 
+var addToPast  = (str, chatRoom, bc) => {
+  model.ChatRoom.findOneAndUpdate({'chatRoom': chatRoom}, {$push: {"cards.past": str}, $pull: {"cards.present": str}, $set: {"cards.timestamp": Date.now()}}, {new: true}, (err, updatedChatRoom) =>{
+    if(err) console.error('[ERROR] Couldn\'t add to **PAST** card. was saving this --> ' + str + ' @' + chatRoom);
+    else console.log('[INFO] Future task added successfully to ' + chatRoom);
+    bc(err, updatedChatRoom);
+  })
+}
+
+var addToPresent  = (str, chatRoom, bc) => {
+  model.ChatRoom.findOneAndUpdate({'chatRoom': chatRoom}, {$push: {"cards.present": str}, $pull: {"cards.future": str}, $set: {"cards.timestamp": Date.now()}}, {new: true}, (err, updatedChatRoom) =>{
+    if(err) console.error('[ERROR] Couldn\'t add to **PRESENT** card. was saving this --> ' + str + ' @' + chatRoom);
+    else console.log('[INFO] Future task added successfully to ' + chatRoom);
+    bc(err, updatedChatRoom);
+  })
+}
+
 var addToFuture = (str, chatRoom, bc) => {
   model.ChatRoom.findOneAndUpdate({'chatRoom': chatRoom}, {$push: {"cards.future": str}, $set: {"cards.timestamp": Date.now()}}, {new: true}, (err, updatedChatRoom) => {
     if(err)
-      console.error('[ERROR] Couldn\'t add to future card. was saving this --> ' + str + ' @' + chatRoom);
+      console.error('[ERROR] Couldn\'t add to **FUTURE BABY** card. was saving this --> ' + str + ' @' + chatRoom);
     else
       console.log('[INFO] Future task added successfully to ' + chatRoom);
     bc(err, updatedChatRoom);

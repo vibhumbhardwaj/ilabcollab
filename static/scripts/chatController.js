@@ -40,7 +40,7 @@ app.controller('chatController', function ($rootScope, $scope, $window) {
         socketArray.push({ index: index, chatRoom: room.chatRoom, socket: io('/chat', { query: "auth_token=" + window.localStorage.chatToken + "&chatRoom=" + room.chatRoom, forceNew: true }) });
     });
 
-    if (primaryIndex == undefined) {
+    if (primaryIndex === undefined) {
         return;
     }
 
