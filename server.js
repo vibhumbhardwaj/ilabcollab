@@ -6,6 +6,7 @@ var session = require('express-session')({secret:"oye"});
 var cookieParser = require('cookie-parser');
 var server = require('http').Server(app);
 var marked = require('marked');
+require('dotenv').load();
 
 var io = require('./socketIOServer.js')(server);
 
