@@ -54,13 +54,13 @@ var schemaForCards = new Schema({
     present: [String],
     future: [String],
     otherCards: [],
-    timestamp: {type: Number, default: Date.now()}
+    timestamp: {type: Number, default: 0}
 })
 /* will need sometime later. perhaps
 var schemaForCard = new Schema({
     name: {type: String, unique: true},
     content: [],
-    timestamp: {type: Number, default: Date.now()}
+    timestamp: {type: Number, default: 0}
 })
 */
 
@@ -69,7 +69,7 @@ var schemaForMessages = new Schema({
     message: String,
     chatRoom: String,
     userName: String,
-    timestamp: {type: Number, default: Date.now()}
+    timestamp: {type: Number, default: 0}
 })
 
 var schemaForChatRooms = new Schema({
