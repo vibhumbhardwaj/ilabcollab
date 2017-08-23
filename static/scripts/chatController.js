@@ -1,4 +1,5 @@
 app.controller('chatController', function ($rootScope, $scope, $window) {
+  try{
     $scope.authorised = true;
     $scope.messages = [];
     var chatRoom = location.href.split("/").pop();
@@ -66,25 +67,42 @@ app.controller('chatController', function ($rootScope, $scope, $window) {
                 if ($scope.notificationEnabled)
                     window.alert('new Message!');
             }            
-        });
+        })
         socketObject.socket.on('unauthorised', function (err) {
             handleOops(err);
-        });        
+        })
+        socketObject.socket.on('previousMessages', (msges)=>{
+          "use strict";
+          if(socketObject.index == primaryIndex)  {
+            //window.open('http://google.com');
+            $scope.messages = msges;
+            let spliceAt = $scope.messages.length - $scope.allowedRooms[primaryIndex].count;
+            $scope.messages.splice(spliceAt, 0, { userName: '', message: '::::::::::::::::::::::::::::::::::  Previous Messages >>>' });
+            $scope.allowedRooms[primaryIndex].count = 0;
+            $scope.$apply();
+          }
+        })
+        socketObject.socket.on('getCardsUpdate', (cards) =>{
+          //window.alert('updated cards for ' + chatRoom);
+          $scope.cards = cards;
+          //$scope.$apply(); Do I really really need this one.?
+        })   
     });
   
     $scope.switchRoom = (newRoom) =>{
-      //write here
+      //window.document.body.innerHTML = $scope.messages[0].message;
       chatRoom = newRoom;
       $scope.messages = [];
-      $scope.messages.push({ userName: '', message: '::::::::::::::::::::::::::::::::::  Requesting server for messages' });
+     // $scope.messages.push({ userName: '', message: '::::::::::::::::::::::::::::::::::  Requesting server for messages' });
       //better check if show prebvious is enabled, if not customise the error message...
       primaryIndex = $scope.allowedRooms.findIndex((x)=>{
         return x.chatRoom == newRoom;
       })
       if($scope.allowedRooms[primaryIndex].showPrevious)
         $scope.messages.push({ userName: '', message: '::::::::::::::::::::::::::::::::::  Requesting server for messages' });
-      socketArray[primaryIndex].socket.emit('needMessagesUpdate');
       $scope.refreshCards();
+      socketArray[primaryIndex].socket.emit('needMessagesUpdate');
+      //window.alert(`all done.`);
     }
 
     $scope.toggleSideBar = function () {
@@ -111,8 +129,6 @@ app.controller('chatController', function ($rootScope, $scope, $window) {
             memeDiv.style.display = 'none';
     }
 
-
-
     $scope.sendImage = (imagePath) => {
         $scope.currentMessage = imagePath;
         $scope.send(true);
@@ -135,13 +151,10 @@ app.controller('chatController', function ($rootScope, $scope, $window) {
     })
     
     $scope.refreshCards = () =>{
+      //window.alert('m here inside refresh cards.. ' + socketArray[primaryIndex].chatRoom);
       socketArray[primaryIndex].socket.emit('needCardsUpdate');
     }
     
-    socketArray[primaryIndex].socket.on('getCardsUpdate', (cards) =>{
-      $scope.cards = cards;
-      //$scope.$apply(); Do I really really need this one.?
-    })
 
     $scope.send = function (imageBoolean) {
         if ($scope.currentMessage) {
@@ -156,14 +169,9 @@ app.controller('chatController', function ($rootScope, $scope, $window) {
             $scope.messages.push(msg);
             $scope.currentMessage = "";
         }
-    }
+    };
     
-    socketArray[primaryIndex].socket.on('previousMessages', function (msges) {
-        //msg.chatRoom
-        $scope.messages = msges;
-        $scope.messages.push({ userName: '', message: '::::::::::::::::::::::::::::::::::  Previous Messages >>>' });
-        $scope.$apply();
-    });
+    
     (()=>{
       "use strict";
       $scope.refreshCards();
@@ -202,5 +210,11 @@ app.controller('chatController', function ($rootScope, $scope, $window) {
             document.getElementById('memes').innerHTML = '<h1>Uh. Oh.</h1>Something Really bad happened at the backend. I\'m sorry';
         })
     }
-
+}
+ catch(err){
+        window.document.body.innerHTML = err;
+      }
+      finally{
+        //window.alert(`please say something happened`);
+      }
 });

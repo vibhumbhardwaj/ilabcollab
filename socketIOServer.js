@@ -112,8 +112,12 @@ module.exports = function (server) {
         // });
       
         socket.on('needMessagesUpdate', () =>{
-          if(chatRooms[globalRoomIndex].showPrevious)
+          
+          if(chatRooms[globalRoomIndex].showPrevious){
+            console.log(`sending in the messages for room-->${chatRooms[globalRoomIndex].chatRoom}`);
             socket.emit('previousMessages', chatRooms[globalRoomIndex].messages);
+            
+          }
         })
       
         socket.on('needCardsUpdate', () =>{

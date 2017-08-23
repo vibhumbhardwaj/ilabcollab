@@ -76,6 +76,8 @@ router.get('/memeSearch', function (req, res) {
             }
             else{
                 console.log('[ERROR] trace- ' + err );
+                if(response)
+                  console.log('[ERROR] status code ' + response.statusCode);
                 res.json({success: false, message: 'Couldn\'t find images. Sorry.'});
             }
         });
