@@ -1,14 +1,18 @@
-# ilabcollab -- Version 7
+# ilabcollab -- Version 7.1
 Current working url: http://tiny.cc/ilabcollab
 
 
 ***Upcoming***:
 1. persistent data between server restarts. <--done in V6
 2. Cards implementation for collab space. (along with realtime sharing and MEMEs) <-- 7
-3. One Page for all the rooms (No reloads for room change) <-- 7
+3. One Page for all the rooms (No reloads for room change) <-- done in 7.1
 4. Timestamp for messages. <-- Done in 7.0
 5. Different DB for development.
 6. Cards will display last update time on hovering and add one on-demand update button too.
+
+**Version 7.1**-->
+1. Complete One page support implemented.
+2. Current and Past cards still not usable :(
 
 **Version 7.0** -->
 1. Todos now available for new cards. *DB changes required for older rooms to work.*
@@ -21,7 +25,7 @@ Current working url: http://tiny.cc/ilabcollab
 2. Some bugs bunny.
 
 **version 6.2** -->
-1. Stop supporting older browsers. It's high time.
+1. Stop supporting older browsers. It's high time. //You could have used Babel altogether but who cares.
 2. Changelog in web. <-- done in 6.3
 
 **version 6** -->
