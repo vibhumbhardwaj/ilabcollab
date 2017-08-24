@@ -25,9 +25,7 @@ app.controller('chatController', function ($rootScope, $scope, $window) {
 
     var handleOops = (err) => {
         $scope.authorised = false;
-        document.getElementById('errorMessage').innerHTML = err;
-        $scope.$apply();
-        throw new Error('oops');
+        $scope.errorMessage = err;
     }
     //var socketPrimary = io({ 'chatRoom': chatRoom, query: "auth_token=" + window.localStorage.chatToken + "&chatRoom=" + chatRoom, forceNew: true });
     //socketPrimary.emit('newlyAdded', chatRoom);
@@ -42,7 +40,15 @@ app.controller('chatController', function ($rootScope, $scope, $window) {
     });
 
     if (primaryIndex === undefined) {
-        return;
+      
+      if($scope.allowedRooms)
+        primaryIndex = 0;
+      else{
+        handleOops('Please login to atleast one of the rooms');
+        //window.alert('Please login to atleast one of the rooms');
+        $rootScope.pause(2000);
+        window.open('/','_self');
+      }
     }
 
     socketArray.forEach(function (socketObject) {
@@ -93,6 +99,7 @@ app.controller('chatController', function ($rootScope, $scope, $window) {
       //window.document.body.innerHTML = $scope.messages[0].message;
       chatRoom = newRoom;
       $scope.messages = [];
+      //write here (username)
      // $scope.messages.push({ userName: '', message: '::::::::::::::::::::::::::::::::::  Requesting server for messages' });
       //better check if show prebvious is enabled, if not customise the error message...
       primaryIndex = $scope.allowedRooms.findIndex((x)=>{
@@ -212,7 +219,7 @@ app.controller('chatController', function ($rootScope, $scope, $window) {
     }
 }
  catch(err){
-        window.document.body.innerHTML = err;
+        console.error(err);
       }
       finally{
         //window.alert(`please say something happened`);

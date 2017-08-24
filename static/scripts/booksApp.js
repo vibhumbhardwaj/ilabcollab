@@ -38,7 +38,15 @@ app.run(function ($rootScope, $http) {
         });
         console.log('signed out.');
     }
-
+    
+    var parseJwt = function (token) {
+        if(!token)
+            return;
+        var base64Url = token.split('.')[1];
+        var base64 = base64Url.replace('-', '+').replace('_', '/');
+        return JSON.parse(window.atob(base64));
+    }; 
+  
     $rootScope.getUserId = function(){
         token = parseJwt(window.localStorage.token);
         if(token)
@@ -50,6 +58,7 @@ app.run(function ($rootScope, $http) {
         if(token)
             return token.userName;
     }
+   
 
     $rootScope.getAllowedRooms = function(){
         token = parseJwt(window.localStorage.chatToken);
@@ -81,14 +90,11 @@ app.run(function ($rootScope, $http) {
         if(token)
             return token.admin;
     }
-
-    var parseJwt = function (token) {
-        if(!token)
-            return;
-        var base64Url = token.split('.')[1];
-        var base64 = base64Url.replace('-', '+').replace('_', '/');
-        return JSON.parse(window.atob(base64));
-    };
+  
+    $rootScope.pause = (milliseconds)=>{ // because why not
+      var dateToWait = Date.now() + milliseconds;
+      while(Date.now() < dateToWait) ;
+    }
 
     $rootScope.dummySendRequest = function () {
         /*     if(window.localStorage.token)
