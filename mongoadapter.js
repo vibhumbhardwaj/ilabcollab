@@ -56,7 +56,7 @@ var findChatRoom = function (findthis, bc) {
 var addToPast  = (str, chatRoom, bc) => {
   model.ChatRoom.findOneAndUpdate({'chatRoom': chatRoom}, {$push: {"cards.past": str}, $pull: {"cards.present": str}, $set: {"cards.timestamp": Date.now()}}, {new: true}, (err, updatedChatRoom) =>{
     if(err) console.error('[ERROR] Couldn\'t add to **PAST** card. was saving this --> ' + str + ' @' + chatRoom);
-    else console.log('[INFO] Future task added successfully to ' + chatRoom);
+    else console.log(`[INFO] PAST task:: ${str} ::added successfully to ` + chatRoom);
     bc(err, updatedChatRoom);
   })
 }
@@ -64,7 +64,7 @@ var addToPast  = (str, chatRoom, bc) => {
 var addToPresent  = (str, chatRoom, bc) => {
   model.ChatRoom.findOneAndUpdate({'chatRoom': chatRoom}, {$push: {"cards.present": str}, $pull: {"cards.future": str}, $set: {"cards.timestamp": Date.now()}}, {new: true}, (err, updatedChatRoom) =>{
     if(err) console.error('[ERROR] Couldn\'t add to **PRESENT** card. was saving this --> ' + str + ' @' + chatRoom);
-    else console.log('[INFO] Future task added successfully to ' + chatRoom);
+    else console.log(`[INFO] Present task:: ${str} ::added successfully to ` + chatRoom);
     bc(err, updatedChatRoom);
   })
 }
@@ -74,7 +74,7 @@ var addToFuture = (str, chatRoom, bc) => {
     if(err)
       console.error('[ERROR] Couldn\'t add to **FUTURE BABY** card. was saving this --> ' + str + ' @' + chatRoom);
     else
-      console.log('[INFO] Future task added successfully to ' + chatRoom);
+      console.log(`[INFO] Future task:: ${str} ::added successfully to ` + chatRoom );
     bc(err, updatedChatRoom);
   })
 }
@@ -84,7 +84,7 @@ var saveChatMessage = (chatRoom, msg, bc) => {
         if(err) 
             console.error('[ERROR] Couldn\'t save message to the database. was saving this --> ' + msg.message + ' @' + chatRoom);
         else
-            console.log('message saved successfully.');
+            console.log(`${msg} message saved successfully.`);
         bc(err, updatedChatRoom);
     });
 }
@@ -137,5 +137,7 @@ module.exports = {
     getChatRooms: getChatRooms,
     createChatRoom: createChatRoom,
     saveChatMessage: saveChatMessage,
-    addToFuture: addToFuture
+    addToFuture: addToFuture,
+    addToPresent: addToPresent,
+    addToPast: addToPast
 }

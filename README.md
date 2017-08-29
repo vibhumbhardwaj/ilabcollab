@@ -1,4 +1,4 @@
-# ilabcollab -- Version 7.1
+# ilabcollab -- Version 7.2
 Current working url: http://tiny.cc/ilabcollab
 
 
@@ -9,6 +9,9 @@ Current working url: http://tiny.cc/ilabcollab
 4. Timestamp for messages. <-- Done in 7.0
 5. Different DB for development.
 6. Cards will display last update time on hovering and add one on-demand update button too.
+
+**Version 7.2**-->
+1. Cards are now working ?
 
 **Version 7.1**-->
 1. Complete One page support implemented.

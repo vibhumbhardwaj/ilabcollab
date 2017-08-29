@@ -135,9 +135,8 @@ module.exports = function (server) {
         })
         socket.on('presentUpdate', (str) => { //working task
             // delete it from future array and push to present array!! give out presentupdate to clients too.
-            "use strict";
             chatRooms[globalRoomIndex].cards.present.push(str);
-            let index = chatRooms[globalRoomIndex].cards.future.findIndex((x) =>{
+            var index = chatRooms[globalRoomIndex].cards.future.findIndex((x) =>{
               return x == str;
             });
             chatRooms[globalRoomIndex].cards.future.splice(index, 1);
@@ -146,12 +145,14 @@ module.exports = function (server) {
             //Alfred: What if this gets failed at database level later. Huh? What's your contingency there huh?
             //Batman: Shut up Alfred, that's someone else's problem.
             //Alfred: You are someone else. Remember?
-            //Batman: oh.
+            //Batman: oh. But it won't. You know why?
+            //Alfred: Uhh not again.
+            //Batman: Because I'm BATMAN
             socket.broadcast.to(chatRoom).emit('presentUpdate', str);  
             
         })
         
-        socket.on('PastUpdate', (str) => { //done task
+          socket.on('pastUpdate', (str) => { //done task
             // delete it from present array and push to past array!! give out pastupdate to clients too. they'll delete from present themselves.
             "use strict";
             chatRooms[globalRoomIndex].cards.present.push(str);

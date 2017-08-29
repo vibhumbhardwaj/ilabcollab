@@ -1,4 +1,9 @@
 app.controller('chatController', function ($rootScope, $scope, $window) {
+  
+  handleOops = (err) => {
+    $scope.authorised = false;
+    $scope.errorMessage = err;
+  }
   try{
     $scope.authorised = true;
     $scope.messages = [];
@@ -12,7 +17,7 @@ app.controller('chatController', function ($rootScope, $scope, $window) {
       present: [],
       past: [],
       timestamp: 0
-    }
+    };
     var $ = ( id )=> { return document.getElementById( id ) }
 
     $scope.simpleTime = "";
@@ -20,35 +25,33 @@ app.controller('chatController', function ($rootScope, $scope, $window) {
         let d = new Date(stamp);
         $scope.simpleTime = d.toDateString() + ' | ' + d.getHours() + ':' + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes();
         //$scope.simpleTime = new Date(stamp).toUTCString();
-        // $scope.$apply();
+        //$scope.$applyAsync();
     }
 
-    var handleOops = (err) => {
-        $scope.authorised = false;
-        $scope.errorMessage = err;
-    }
     //var socketPrimary = io({ 'chatRoom': chatRoom, query: "auth_token=" + window.localStorage.chatToken + "&chatRoom=" + chatRoom, forceNew: true });
     //socketPrimary.emit('newlyAdded', chatRoom);
     /**initialisation complete.**/
     var socketArray = [];
 
     $scope.allowedRooms = $rootScope.getAllowedRooms();
-    $scope.allowedRooms.forEach(function (room, index) {
+    var flag = false;
+    if(!$scope.allowedRooms){
+      flag = true;
+    }
+    else{
+      $scope.allowedRooms.forEach(function (room, index) {
         if (room.chatRoom == chatRoom)
             primaryIndex = index;
         socketArray.push({ index: index, chatRoom: room.chatRoom, socket: io('/chat', { query: "auth_token=" + window.localStorage.chatToken + "&chatRoom=" + room.chatRoom, forceNew: true }) });
-    });
-
-    if (primaryIndex === undefined) {
-      
-      if($scope.allowedRooms)
-        primaryIndex = 0;
-      else{
-        handleOops('Please login to atleast one of the rooms');
+      });
+      if(primaryIndex === undefined)
+        flag = true;
+    }
+    if (flag === true){
+        handleOops(`Sorry not sorry. You are not allowed to access ${chatRoom} room.`);
         //window.alert('Please login to atleast one of the rooms');
-        $rootScope.pause(2000);
+        $rootScope.pause(10000);
         window.open('/','_self');
-      }
     }
 
     socketArray.forEach(function (socketObject) {
@@ -56,13 +59,13 @@ app.controller('chatController', function ($rootScope, $scope, $window) {
             console.log('new message in ' + socketObject.chatRoom + ' --> ' + msg.message);
             if (socketObject.index != primaryIndex) {
                 $scope.allowedRooms[socketObject.index].count++;
-                $scope.$apply();
-                document.getElementById('chatSideBar').style.display = 'none';
-                document.getElementById('chatSideBar').style.display = 'block';
+                $scope.$applyAsync();
+                $('chatSideBar').style.display = 'none';
+                $('chatSideBar').style.display = 'block';
             }
             else {
                 $scope.messages.push(msg);
-                $scope.$apply();
+                $scope.$applyAsync();
 
                 if (!document.hasFocus())
                     if ($scope.alertCount)
@@ -78,20 +81,22 @@ app.controller('chatController', function ($rootScope, $scope, $window) {
             handleOops(err);
         })
         socketObject.socket.on('previousMessages', (msges)=>{
-          "use strict";
           if(socketObject.index == primaryIndex)  {
             //window.open('http://google.com');
             $scope.messages = msges;
-            let spliceAt = $scope.messages.length - $scope.allowedRooms[primaryIndex].count;
+            var spliceAt = $scope.messages.length - $scope.allowedRooms[primaryIndex].count;
             $scope.messages.splice(spliceAt, 0, { userName: '', message: '::::::::::::::::::::::::::::::::::  Previous Messages >>>' });
-            $scope.allowedRooms[primaryIndex].count = 0;
-            $scope.$apply();
+          $scope.allowedRooms[primaryIndex].count = 0;
+           // if (!$scope.$$phase && !$scope.$root.$$phase) 
+              $scope.$applyAsync();
           }
         })
         socketObject.socket.on('getCardsUpdate', (cards) =>{
-          //window.alert('updated cards for ' + chatRoom);
+          
           $scope.cards = cards;
-          //$scope.$apply(); Do I really really need this one.?
+         // window.alert('updated cards for ' + chatRoom + '  ' + $scope.cards.future[0]);
+       //   if (!$scope.$$phase && !$scope.$root.$$phase) 
+            $scope.$applyAsync();// Do I really really need this one.?
         })   
     });
   
@@ -99,7 +104,7 @@ app.controller('chatController', function ($rootScope, $scope, $window) {
       //window.document.body.innerHTML = $scope.messages[0].message;
       chatRoom = newRoom;
       $scope.messages = [];
-      //write here (username)
+      $scope.userName = $rootScope.getNameForChat(chatRoom);
      // $scope.messages.push({ userName: '', message: '::::::::::::::::::::::::::::::::::  Requesting server for messages' });
       //better check if show prebvious is enabled, if not customise the error message...
       primaryIndex = $scope.allowedRooms.findIndex((x)=>{
@@ -113,23 +118,34 @@ app.controller('chatController', function ($rootScope, $scope, $window) {
     }
 
     $scope.toggleSideBar = function () {
-        var sidebar = document.getElementById('chatSideBar');
+        var sidebar = $('chatSideBar');
         if (sidebar.style.display == 'none')
             sidebar.style.display = 'block';
         else
             sidebar.style.display = 'none';
     }
     
-    $scope.toggleTasksDiv = () => {
+    $scope.toggleTasksDiv = (e) => {
+     // var cardName;
+      if(e){
+        $scope.card = e.srcElement.id;
+        if($scope.card == 'future')
+          $scope.cardName = 'Backlog';
+        if($scope.card == 'present')
+          $scope.cardName = 'In Progress';
+        if($scope.card =='past')
+          $scope.cardName = 'Completed';
+        $scope.$applyAsync();
+      }
       var tasksDiv = $('tasksDiv');
       if (tasksDiv.style.display == 'none')
-            tasksDiv.style.display = '';
-        else
-            tasksDiv.style.display = 'none'; 
+        tasksDiv.style.display = '';
+      else
+        tasksDiv.style.display = 'none'; 
     }
 
     $scope.toggleMemeSearch = () => {
-        var memeDiv = document.getElementById('memeDiv');
+        var memeDiv = $('memeDiv');
         if (memeDiv.style.display == 'none')
             memeDiv.style.display = '';
         else
@@ -148,18 +164,74 @@ app.controller('chatController', function ($rootScope, $scope, $window) {
       if($scope.newTask){
         socketArray[primaryIndex].socket.emit('futureUpdate', $scope.newTask);
         $scope.cards.future.push($scope.newTask);
+        $scope.$applyAsync();
         $scope.newTask = '';
       }
     }
     
-    socketArray[primaryIndex].socket.on('getFuture', function (str) {
-      $scope.cards.future.push(str);
-      $scope.$apply();
+    $scope.addPresent = (task) => {
+      //window.alert(task);
+      var ind = $scope.cards.future.findIndex((x)=>{
+        return x == task
+      })
+     // window.alert(ind);
+      if(ind >= 0){
+        socketArray[primaryIndex].socket.emit('presentUpdate', task);
+        $scope.cards.future.splice(ind, 1);
+        $scope.cards.present.push(task);
+        $scope.$applyAsync();
+      } 
+    }
+    
+    $scope.addPast = (task) => {
+      //window.alert(task);
+      var ind = $scope.cards.present.findIndex((x)=>{
+        return x == task
+      })
+     // window.alert(ind);
+      if(ind >= 0){
+        socketArray[primaryIndex].socket.emit('pastUpdate', task);
+        $scope.cards.present.splice(ind, 1);
+        $scope.cards.past.push(task);
+        $scope.$applyAsync();
+      } 
+    }    
+    
+    socketArray[primaryIndex].socket.on('futureUpdate', function (str) {
+     $scope.cards.future.push(str);
+      $scope.$applyAsync();
+    })
+    
+    socketArray[primaryIndex].socket.on('presentUpdate', function (str){
+      var ind = $scope.cards.future.findIndex((x)=>{
+        return x == str
+      })
+      if(ind >= 0){
+        $scope.cards.future.splice(ind, 1);
+        $scope.cards.present.push(str);
+        $scope.$applyAsync();
+      }
+      else
+        $scope.refreshCards();
+      
+    });
+    
+    socketArray[primaryIndex].socket.on('pastUpdate', function (str){
+      var ind = $scope.cards.present.findIndex((x)=>{
+        return x == str
+      })
+      if(ind >= 0){
+        $scope.cards.present.splice(ind, 1);
+        $scope.cards.past.push(str);
+        $scope.$applyAsync();
+      }
+      else
+        $scope.refreshCards();
+      
     })
     
     $scope.refreshCards = () =>{
-      //window.alert('m here inside refresh cards.. ' + socketArray[primaryIndex].chatRoom);
-      socketArray[primaryIndex].socket.emit('needCardsUpdate');
+     socketArray[primaryIndex].socket.emit('needCardsUpdate');
     }
     
 
@@ -184,9 +256,6 @@ app.controller('chatController', function ($rootScope, $scope, $window) {
       $scope.refreshCards();
       window.onload = ()=>{
         let height = $('memeButton').offsetTop;
-        let card1 = $('card1').offsetTop;
-        let card2 = $('card2').offsetTop;
-        let card3 = $('card3').offsetTop;
         $('messagesDiv').style.top = $('memeDiv').style.top = $('tasksDiv').style.top = height;
       }
     })();
@@ -210,16 +279,16 @@ app.controller('chatController', function ($rootScope, $scope, $window) {
                 $scope.imageResult = res.data.data;
             else {
                 $scope.imageResult = [];
-                document.getElementById('memes').innerHTML = '<h1>Uh. Oh.</h1>' + res.data.message;
+                $('memes').innerHTML = '<h1>Uh. Oh.</h1>' + res.data.message;
             }
         }, function failure(err) {
             $scope.imageResult = [];
-            document.getElementById('memes').innerHTML = '<h1>Uh. Oh.</h1>Something Really bad happened at the backend. I\'m sorry';
+            $('memes').innerHTML = '<h1>Uh. Oh.</h1>Something Really bad happened at the backend. I\'m sorry';
         })
     }
 }
  catch(err){
-        console.error(err);
+        console.log(err);
       }
       finally{
         //window.alert(`please say something happened`);

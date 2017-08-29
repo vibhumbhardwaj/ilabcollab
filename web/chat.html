@@ -84,29 +84,27 @@
         <br>
         <div class="w3-btn" ng-click="toggleMemeSearch($event)" id="memeButton" style="z-index: 1; position: absolute; right: 2; background: #475E47; color: white">More than a :)</div>
         <br><br><br>
-        <div class="w3-btn vb-btn tooltip" ng-mouseover="getTime(cards.timestamp)" id="cards" style="z-index: 1; position: absolute; right: 2; width: 18%;">
-          <span class="tooltiptext">{{simpleTime}}</span>
+        <div class="w3-btn vb-btn tooltip" id="cards" style="z-index: 1; position: absolute; right: 2; width: 18%;">
           <h4 style="color: #475E47">
             Tasks
           </h4>
-          <div class="w3-btn" id="card1" ng-click="toggleTasksDiv($event)" style="width: 100%; text-align: right; border-bottom: 1px solid #475E47;">Backlog</div>
+          <div class="w3-btn" id="future" ng-click="toggleTasksDiv($event)" style="width: 100%; text-align: right; border-bottom: 1px solid #475E47;">Backlog</div>
           <br><br>
-          <div class="w3-btn" id="card2" ng-click="toggleMemeSearch($event)" style="width: 100%; text-align: right; border-bottom: 1px solid #475E47;">Working on 'em</div>
+          <div class="w3-btn" id="present" ng-click="toggleTasksDiv($event)" style="width: 100%; text-align: right; border-bottom: 1px solid #475E47;">Working on 'em</div>
           <br><br>
-          <div class="w3-btn" id="card3" ng-click="toggleMemeSearch($event)" style="width: 100%; text-align: right; border-bottom: 1px solid #475E47;">Done B-)</div>
+          <div class="w3-btn" id="past" ng-click="toggleTasksDiv($event)" style="width: 100%; text-align: right; border-bottom: 1px solid #475E47;">Done B-)</div>
         </div>
         <div id="tasksDiv" class="w3-animate-right w3-btn" style=" z-index: 2; position: absolute; width: 350px; right: 2; overflow: auto; height: calc(100vh - 200px); display: none; background: white">
-          <span class="w3-btn w3-right" ng-click="toggleTasksDiv()"><b>X</b></span>
-          <form ng-submit="addFuture()">
+          <u>{{cardName}}</u><div class="w3-btn w3-right" ng-click="toggleTasksDiv()" width="100%"><b>X</b></div><br>
+          <form ng-submit="addFuture()" ng-show="card == 'future'">
             <input type="text" ng-model="newTask" class="w3-input" placeholder="Add New">  
           </form>
-          <!--<ul style='text-align: left; display: hidden;'>
-            
-          </ul>-->
           <ul style='text-align: left; display: block;'>
-            <li>This is not done :O</li>
-            <li>And That too !!! OMG</li>
-            <li ng-repeat="futureTask in cards.future">{{futureTask}}</li>
+            <li ng-repeat="task in cards[card] track by $index">
+              <span style="color: green" ng-click="addPresent(task)" ng-show="card == 'future'">[Start this]</span>
+              <span style="color: green" ng-click="addPast(task)" ng-show="card == 'present'">[Mark it done]</span>
+              <span style="color: green" ng-click="deletePast(task)" ng-show="card == 'past'"></span>
+              {{task}} </li>
           </ul>
         </div>
         <div id="memeDiv" class="w3-animate-right w3-btn" style=" z-index: 2; position: absolute; width: 250px; right: 2; overflow: auto; height: calc(100vh - 200px); display: none; background: white">
