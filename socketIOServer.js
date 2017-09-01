@@ -155,11 +155,11 @@ module.exports = function (server) {
           socket.on('pastUpdate', (str) => { //done task
             // delete it from present array and push to past array!! give out pastupdate to clients too. they'll delete from present themselves.
             "use strict";
-            chatRooms[globalRoomIndex].cards.present.push(str);
-            let index = chatRooms[globalRoomIndex].cards.future.findIndex((x) =>{
+            chatRooms[globalRoomIndex].cards.past.push(str);
+            let index = chatRooms[globalRoomIndex].cards.present.findIndex((x) =>{
               return x == str;
             });
-            chatRooms[globalRoomIndex].cards.future.splice(index, 1);
+            chatRooms[globalRoomIndex].cards.present.splice(index, 1);
             // added and deleted. same needs to be done at database level though.
             socketHelper.addToPast(str, chatRoom); //done that too. anything else?
             socket.broadcast.to(chatRoom).emit('pastUpdate', str);  
